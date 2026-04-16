@@ -3,870 +3,649 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Payment Status — BookPrint Pro</title>
-    <meta name="description" content="View your invoice and payment status securely with BookPrint Pro.">
-    <meta name="robots" content="noindex, nofollow">
+    <title>BookPrint Pro — Account Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        /* ═══════════════════════════════════════════════
-           ROOT TOKENS
-        ═══════════════════════════════════════════════ */
         :root {
-            --gold:          #D4AF37;
-            --gold-light:    #F0D060;
-            --gold-dark:     #A88B20;
-            --navy:          #0A192F;
-            --navy-mid:      #0F2540;
-            --navy-light:    #172A45;
-            --success:       #10B981;
-            --success-bg:    #ECFDF5;
-            --success-light: #D1FAE5;
-            --warning:       #F59E0B;
-            --warning-bg:    #FFFBEB;
-            --warning-light: #FDE68A;
-            --danger:        #EF4444;
-            --danger-bg:     #FEF2F2;
-            --danger-light:  #FECACA;
-            --text-dark:     #0F172A;
-            --text-mid:      #334155;
-            --text-muted:    #64748B;
-            --border:        #E2E8F0;
-            --white:         #FFFFFF;
-            --bg-page:       #F1F5F9;
-            --radius-xl:     24px;
-            --radius-lg:     16px;
-            --radius-md:     12px;
-            --radius-sm:     8px;
-            --shadow-card:   0 32px 80px rgba(0,0,0,0.45), 0 8px 24px rgba(0,0,0,0.25);
-            --shadow-sm:     0 2px 8px rgba(0,0,0,0.08);
-            --transition:    all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --navy: #0A192F;
+            --navy-mid: #112240;
+            --navy-light: #1E3A5F;
+            --gold: #D4AF37;
+            --gold-soft: rgba(212,175,55,0.15);
+            --gold-glow: rgba(212,175,55,0.35);
+            --success: #10B981;
+            --success-bg: rgba(16,185,129,0.1);
+            --warning: #F59E0B;
+            --warning-bg: rgba(245,158,11,0.1);
+            --danger: #EF4444;
+            --danger-bg: rgba(239,68,68,0.1);
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --border: rgba(255,255,255,0.08);
+            --card-bg: rgba(255,255,255,0.04);
         }
 
-        /* ═══════════════════════════════════════════════
-           RESET & BASE
-        ═══════════════════════════════════════════════ */
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { font-family: 'Inter', sans-serif; }
+        body { background: var(--navy); color: var(--text-main); min-height: 100vh; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 10px; }
+
+        /* ===================== LOADING ===================== */
+        #loading-screen {
+            position: fixed; inset: 0; background: var(--navy);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; gap: 20px;
         }
-
-        html { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--navy);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 48px 16px 80px;
-            position: relative;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+        .loading-logo { font-size: 36px; font-weight: 900; letter-spacing: -1px; color: var(--text-main); }
+        .loading-logo span { color: var(--gold); }
+        .loading-spinner {
+            width: 40px; height: 40px; border: 3px solid rgba(212,175,55,0.2);
+            border-top-color: var(--gold); border-radius: 50%;
+            animation: spin 0.8s linear infinite;
         }
-
-        /* ═══════════════════════════════════════════════
-           ANIMATED BACKGROUND
-        ═══════════════════════════════════════════════ */
-        .bg-canvas {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .bg-canvas::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(ellipse 80% 60% at 20% 10%, rgba(212,175,55,0.10) 0%, transparent 60%),
-                radial-gradient(ellipse 60% 80% at 80% 90%, rgba(16,185,129,0.06) 0%, transparent 60%),
-                linear-gradient(160deg, #0A192F 0%, #0d2340 50%, #0f2c50 100%);
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.12;
-            animation: float 18s ease-in-out infinite;
-        }
-        .orb-1 {
-            width: 500px; height: 500px;
-            background: radial-gradient(circle, #D4AF37, transparent);
-            top: -150px; left: -100px;
-            animation-duration: 20s;
-        }
-        .orb-2 {
-            width: 400px; height: 400px;
-            background: radial-gradient(circle, #10B981, transparent);
-            bottom: -100px; right: -80px;
-            animation-duration: 24s;
-            animation-delay: -8s;
-        }
-        .orb-3 {
-            width: 300px; height: 300px;
-            background: radial-gradient(circle, #3B82F6, transparent);
-            top: 50%; left: 60%;
-            animation-duration: 16s;
-            animation-delay: -4s;
-            opacity: 0.06;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -40px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
-
-        /* ═══════════════════════════════════════════════
-           LAYOUT CONTAINER
-        ═══════════════════════════════════════════════ */
-        .page-wrapper {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 560px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0;
-        }
-
-        /* ═══════════════════════════════════════════════
-           TOP BRANDING
-        ═══════════════════════════════════════════════ */
-        .brand-bar {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 32px;
-            animation: slideDown 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-        }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-
-        .brand-logo {
-            width: 46px; height: 46px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 22px; font-weight: 900; color: var(--navy);
-            letter-spacing: -1px;
-            box-shadow: 0 6px 20px rgba(212,175,55,0.40), 0 2px 6px rgba(0,0,0,0.3);
-            flex-shrink: 0;
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            gap: 1px;
-        }
-
-        .brand-name {
-            font-size: 20px; font-weight: 800;
-            color: var(--white); letter-spacing: -0.4px;
-        }
-
-        .brand-name span { color: var(--gold); }
-
-        .brand-tagline {
-            font-size: 11px; font-weight: 500;
-            color: rgba(255,255,255,0.38);
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-        }
-
-        /* ═══════════════════════════════════════════════
-           MAIN CARD
-        ═══════════════════════════════════════════════ */
-        .card {
-            width: 100%;
-            background: var(--white);
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: var(--shadow-card);
-            animation: riseUp 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
-        }
-
-        @keyframes riseUp {
-            from { opacity: 0; transform: translateY(40px) scale(0.96); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        /* ── Card Header ── */
-        .card-header {
-            background: linear-gradient(145deg, var(--navy) 0%, #1a3558 100%);
-            padding: 32px 36px 28px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-header::before,
-        .card-header::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
-        }
-
-        .card-header::before {
-            width: 220px; height: 220px;
-            top: -80px; right: -60px;
-            background: radial-gradient(circle, rgba(212,175,55,0.12), transparent 70%);
-        }
-
-        .card-header::after {
-            width: 150px; height: 150px;
-            bottom: -60px; left: -40px;
-            background: radial-gradient(circle, rgba(255,255,255,0.04), transparent 70%);
-        }
-
-        .header-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header-label {
-            font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.14em;
-            color: rgba(255,255,255,0.38);
-            margin-bottom: 6px;
-        }
-
-        .header-invoice-num {
-            font-size: 24px; font-weight: 800;
-            color: var(--white); letter-spacing: -0.5px;
-            line-height: 1;
-        }
-
-        .header-business {
-            font-size: 13px; color: rgba(255,255,255,0.55);
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        .header-badge-secure {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 5px 11px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 9999px;
-            font-size: 10px; font-weight: 600;
-            color: rgba(255,255,255,0.55);
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
-            flex-shrink: 0;
-            margin-top: 4px;
-        }
-
-        .header-badge-secure .lock-dot {
-            width: 6px; height: 6px;
-            background: var(--gold);
-            border-radius: 50%;
-        }
-
-        /* ── Status Banner ── */
-        .status-banner {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 24px 36px;
-            border-bottom: 1px solid var(--border);
-            position: relative;
-        }
-
-        .status-banner.paid    { background: linear-gradient(to right, #F0FDF4, #ECFDF5); }
-        .status-banner.partial { background: linear-gradient(to right, #FFFBEB, #FEF9E5); }
-        .status-banner.unpaid  { background: linear-gradient(to right, #FFF5F5, #FEF2F2); }
-
-        .status-icon-wrap {
-            width: 58px; height: 58px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 28px;
-            flex-shrink: 0;
-        }
-
-        .icon-paid    { background: var(--success-light); }
-        .icon-partial { background: var(--warning-light); }
-        .icon-unpaid  { background: var(--danger-light); }
-
-        .status-info { flex: 1; min-width: 0; }
-
-        .status-pill {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 4px 12px;
-            border-radius: 9999px;
-            font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.10em;
-            margin-bottom: 8px;
-        }
-
-        .pill-dot {
-            width: 5px; height: 5px;
-            border-radius: 50%;
-        }
-
-        .pill-paid    { background: #DCFCE7; color: #14532D; }
-        .pill-paid .pill-dot    { background: #16A34A; }
-        .pill-partial { background: #FEF3C7; color: #78350F; }
-        .pill-partial .pill-dot { background: #D97706; }
-        .pill-unpaid  { background: #FEE2E2; color: #7F1D1D; }
-        .pill-unpaid .pill-dot  { background: #DC2626; }
-
-        .status-amount {
-            font-size: 32px; font-weight: 900;
-            line-height: 1; letter-spacing: -1px;
-        }
-
-        .amount-paid    { color: #059669; }
-        .amount-partial { color: #D97706; }
-        .amount-unpaid  { color: #DC2626; }
-
-        .status-note {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-top: 4px;
-            font-weight: 500;
-        }
-
-        /* ── Overdue Alert ── */
-        .overdue-alert {
-            margin: 20px 28px 0;
-            padding: 14px 18px;
-            background: #FFF1F2;
-            border: 1.5px solid #FECDD3;
-            border-radius: var(--radius-lg);
-            display: flex; align-items: flex-start; gap: 12px;
-            animation: pulseRed 2.5s ease-in-out infinite;
-        }
-
-        @keyframes pulseRed {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.0); }
-            50%       { box-shadow: 0 0 0 5px rgba(239,68,68,0.08); }
-        }
-
-        .overdue-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
-
-        .overdue-text {
-            font-size: 13px; color: #9F1239;
-            line-height: 1.5; font-weight: 500;
-        }
-
-        .overdue-text strong { font-weight: 700; display: block; margin-bottom: 2px; }
-
-        /* ── Card Body ── */
-        .card-body { padding: 28px 36px 0; }
-
-        .section-label {
-            font-size: 10px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.14em;
-            color: #94A3B8;
-            margin-bottom: 12px;
-        }
-
-        /* ── Detail Table ── */
-        .detail-table {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: 24px;
-        }
-
-        .detail-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 13px 18px;
-            border-bottom: 1px solid var(--border);
-            gap: 12px;
-            transition: var(--transition);
-        }
-
-        .detail-row:last-child { border-bottom: none; }
-        .detail-row:hover { background: #F8FAFC; }
-
-        .detail-label {
-            font-size: 13px; color: var(--text-muted);
-            font-weight: 500; flex-shrink: 0;
-        }
-
-        .detail-value {
-            font-size: 13px; font-weight: 600;
-            color: var(--text-dark);
-            text-align: right;
-            word-break: break-word;
-            max-width: 62%;
-        }
-
-        /* ── Payment Breakdown ── */
-        .breakdown-box {
-            background: linear-gradient(135deg, #F8FAFC, #F1F5F9);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: 24px;
-        }
-
-        .breakdown-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 13px 20px;
-            font-size: 14px;
-            border-bottom: 1px dashed #E2E8F0;
-        }
-
-        .breakdown-row:last-child { border-bottom: none; }
-
-        .breakdown-label { color: var(--text-muted); font-weight: 500; }
-        .breakdown-value { font-weight: 600; color: var(--text-dark); }
-
-        .breakdown-row.paid-credit .breakdown-value { color: var(--success); }
-
-        .breakdown-row.total-row {
-            font-size: 16px; font-weight: 700;
-            background: var(--white);
-            border-top: 1px solid var(--border);
-            border-bottom: none;
-            padding: 16px 20px;
-        }
-
-        .total-paid    { color: var(--success) !important; }
-        .total-partial { color: var(--warning) !important; }
-        .total-unpaid  { color: var(--danger) !important; }
-
-        /* ── Success Box ── */
-        .success-box {
-            background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
-            border: 1.5px solid #BBF7D0;
-            border-radius: var(--radius-lg);
-            padding: 28px 24px;
-            text-align: center;
-            margin-bottom: 28px;
-            animation: popIn 0.5s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-        }
-
-        @keyframes popIn {
-            from { transform: scale(0.88); opacity: 0; }
-            to   { transform: scale(1); opacity: 1; }
-        }
-
-        .success-emoji { font-size: 44px; margin-bottom: 10px; display: block; }
-        .success-title { font-size: 17px; font-weight: 800; color: #065F46; margin-bottom: 5px; }
-        .success-sub   { font-size: 13px; color: #059669; line-height: 1.5; }
-
-        /* ── Contact Footer ── */
-        .card-footer {
-            background: #F8FAFC;
-            border-top: 1px solid var(--border);
-            padding: 20px 36px;
-            text-align: center;
-        }
-
-        .card-footer p {
-            font-size: 12px; color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        .card-footer strong { color: var(--text-mid); }
-
-        .card-footer a {
-            color: var(--navy);
-            text-decoration: none;
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        .card-footer a:hover { color: var(--gold-dark); border-color: var(--gold-dark); }
-
-        /* ── Page Footer ── */
-        .page-footer {
-            margin-top: 24px;
-            text-align: center;
-            animation: slideDown 0.6s 0.4s ease-out both;
-        }
-
-        .page-footer p {
-            font-size: 11px; color: rgba(255,255,255,0.22);
-            letter-spacing: 0.04em;
-        }
-
-        /* ═══════════════════════════════════════════════
-           LOADING STATE
-        ═══════════════════════════════════════════════ */
-        .loading-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            padding: 60px 20px;
-            color: rgba(255,255,255,0.55);
-        }
-
-        .spinner-track {
-            width: 44px; height: 44px;
-            border: 3px solid rgba(255,255,255,0.1);
-            border-top-color: var(--gold);
-            border-radius: 50%;
-            animation: spin 0.75s linear infinite;
-        }
-
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .loading-text {
-            font-size: 14px; font-weight: 500;
-            color: rgba(255,255,255,0.5);
+        /* ===================== ACCESS DENIED ===================== */
+        .denied-page {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 40px 20px;
+        }
+        .denied-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px;
+            padding: 60px 40px; max-width: 480px; width: 100%; text-align: center;
+        }
+        .denied-icon { font-size: 64px; margin-bottom: 24px; }
+        .denied-card h2 { font-size: 26px; font-weight: 800; margin-bottom: 12px; color: var(--gold); }
+        .denied-card p { color: var(--text-muted); line-height: 1.7; font-size: 15px; }
+
+        /* ===================== BACKGROUND ORBS ===================== */
+        .bg-orb {
+            position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(80px); opacity: 0.15;
+        }
+        .orb1 { width: 500px; height: 500px; background: var(--gold); top: -200px; right: -150px; }
+        .orb2 { width: 400px; height: 400px; background: #3B82F6; bottom: -150px; left: -100px; }
+
+        /* ===================== MAIN LAYOUT ===================== */
+        .dashboard-wrap {
+            position: relative; z-index: 1; max-width: 980px; margin: 0 auto;
+            padding: 0 20px 80px;
         }
 
-        /* ═══════════════════════════════════════════════
-           ERROR STATE
-        ═══════════════════════════════════════════════ */
-        .error-card {
-            width: 100%;
-            background: var(--white);
-            border-radius: var(--radius-xl);
-            padding: 56px 40px;
-            text-align: center;
-            box-shadow: var(--shadow-card);
-            animation: riseUp 0.5s ease-out both;
+        /* ===================== HEADER ===================== */
+        .db-header {
+            padding: 32px 0 40px;
+            display: flex; flex-direction: column; gap: 28px;
+        }
+        .db-brand {
+            display: flex; align-items: center; gap: 12px;
+        }
+        .db-logo {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--gold), #B8860B);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: 900; font-size: 22px; color: var(--navy);
+            box-shadow: 0 0 24px var(--gold-glow);
+        }
+        .db-brand-name { font-size: 18px; font-weight: 700; color: var(--text-main); }
+        .db-brand-name span { color: var(--gold); }
+        .db-brand-date { font-size: 13px; color: var(--text-muted); margin-top: 1px; }
+
+        .db-greeting { }
+        .db-greeting h1 {
+            font-size: clamp(24px, 5vw, 34px); font-weight: 800; line-height: 1.2;
+            background: linear-gradient(135deg, #FFFFFF, var(--gold));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .db-greeting p { color: var(--text-muted); margin-top: 8px; font-size: 15px; }
+
+        /* ===================== BANNERS ===================== */
+        .db-banner {
+            border-radius: 14px; padding: 16px 20px;
+            display: flex; align-items: center; gap: 14px;
+            font-size: 14px; font-weight: 600; margin-bottom: 8px;
+        }
+        .db-banner-overdue {
+            background: var(--danger-bg); border: 1px solid rgba(239,68,68,0.3); color: #FCA5A5;
+        }
+        .db-banner-success {
+            background: var(--success-bg); border: 1px solid rgba(16,185,129,0.3); color: #6EE7B7;
+        }
+        .db-banner-icon { font-size: 20px; flex-shrink: 0; }
+        .db-banner p { font-weight: 500; color: inherit; }
+
+        /* ===================== SUMMARY CARDS ===================== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px; margin-bottom: 32px;
+        }
+        .summary-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 18px; padding: 24px 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .summary-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+        .summary-card-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+        .summary-card-value { font-size: 26px; font-weight: 800; color: var(--text-main); }
+        .summary-card-sub { font-size: 12px; color: var(--text-muted); margin-top: 6px; }
+        .card-billed .summary-card-value { color: var(--text-main); }
+        .card-paid .summary-card-value { color: var(--success); }
+        .card-outstanding .summary-card-value { color: var(--danger); }
+        .card-outstanding { border-left: 3px solid var(--danger); }
+        .card-paid { border-left: 3px solid var(--success); }
+        .card-invoices { border-left: 3px solid var(--gold); }
+
+        /* ===================== SECTION TITLE ===================== */
+        .section-title {
+            font-size: 18px; font-weight: 700; margin-bottom: 16px;
+            color: var(--text-main); display: flex; align-items: center; gap: 10px;
+        }
+        .section-title::after {
+            content: ''; flex: 1; height: 1px; background: var(--border);
         }
 
-        .error-icon-wrap {
-            width: 80px; height: 80px;
-            background: var(--danger-bg);
-            border-radius: 50%;
+        /* ===================== TRANSACTIONS TABLE ===================== */
+        .transactions-table-wrap {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 18px; overflow: hidden;
+        }
+        .transactions-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .transactions-table thead {
+            background: rgba(255,255,255,0.04);
+        }
+        .transactions-table th {
+            padding: 14px 16px; text-align: left; font-size: 11px;
+            font-weight: 700; color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 0.04em; border-bottom: 1px solid var(--border);
+        }
+        .transactions-table td {
+            padding: 14px 16px; border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        .transactions-table tbody tr:last-child td { border-bottom: none; }
+        .transactions-table tr { transition: background 0.15s; }
+        .transactions-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+        /* Row highlights */
+        .row-paid { background: rgba(16,185,129,0.05); }
+        .row-paid:hover { background: rgba(16,185,129,0.08) !important; }
+        .row-overdue { background: rgba(239,68,68,0.06); }
+        .row-overdue:hover { background: rgba(239,68,68,0.1) !important; }
+        .row-partial { background: rgba(245,158,11,0.05); }
+        .row-partial:hover { background: rgba(245,158,11,0.08) !important; }
+
+        /* Status badges */
+        .badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap;
+        }
+        .badge-paid { background: var(--success-bg); color: #10B981; border: 1px solid rgba(16,185,129,0.3); }
+        .badge-partial { background: var(--warning-bg); color: #F59E0B; border: 1px solid rgba(245,158,11,0.3); }
+        .badge-unpaid { background: rgba(239,68,68,0.12); color: #EF4444; border: 1px solid rgba(239,68,68,0.3); }
+        .badge-overdue { background: rgba(239,68,68,0.18); color: #F87171; border: 1px solid rgba(239,68,68,0.5); animation: pulse-badge 2s infinite; }
+        @keyframes pulse-badge { 0%,100% { opacity: 1; } 50% { opacity: 0.7; } }
+
+        /* View Invoice button */
+        .btn-view {
+            background: transparent; border: 1px solid var(--border);
+            color: var(--text-muted); padding: 6px 12px; border-radius: 8px;
+            font-size: 11px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-view:hover {
+            border-color: var(--gold); color: var(--gold);
+            background: var(--gold-soft);
+        }
+
+        /* ===================== INVOICE MODAL ===================== */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; z-index: 1000;
+            background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .modal-overlay.open { display: flex; }
+        .inv-modal {
+            background: var(--navy-mid); border: 1px solid var(--border);
+            border-radius: 24px; width: 100%; max-width: 600px; max-height: 90vh;
+            overflow-y: auto; animation: modalIn 0.25s ease-out;
+        }
+        @keyframes modalIn { from { opacity: 0; transform: translateY(20px) scale(0.96); } to { opacity: 1; transform: none; } }
+        .inv-modal-header {
+            padding: 24px 28px 20px; display: flex;
+            justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border); position: sticky; top: 0;
+            background: var(--navy-mid); z-index: 2;
+        }
+        .inv-modal-header h3 { font-size: 18px; font-weight: 700; }
+        .inv-modal-close {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+            color: var(--text-muted); font-size: 20px; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            font-size: 38px;
-            margin: 0 auto 20px;
+            transition: background 0.2s;
+        }
+        .inv-modal-close:hover { background: rgba(239,68,68,0.15); color: var(--danger); }
+        .inv-modal-body { padding: 28px; }
+
+        .inv-row {
+            display: flex; justify-content: space-between; align-items: baseline;
+            padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .inv-row:last-child { border-bottom: none; }
+        .inv-row-label { font-size: 13px; color: var(--text-muted); }
+        .inv-row-val { font-size: 14px; font-weight: 600; color: var(--text-main); }
+
+        .inv-totals {
+            background: rgba(255,255,255,0.03); border-radius: 14px;
+            padding: 16px; margin-top: 20px; border: 1px solid var(--border);
+        }
+        .inv-total-row {
+            display: flex; justify-content: space-between;
+            padding: 8px 0; font-size: 14px;
+        }
+        .inv-total-row.grand {
+            border-top: 1px solid var(--border); margin-top: 8px; padding-top: 12px;
+            font-size: 16px; font-weight: 800;
+        }
+        .inv-overdue-note {
+            background: var(--danger-bg); border: 1px solid rgba(239,68,68,0.3);
+            border-radius: 10px; padding: 12px 16px; margin-top: 16px;
+            font-size: 13px; color: #FCA5A5; display: flex; gap: 10px; align-items: center;
         }
 
-        .error-title {
-            font-size: 22px; font-weight: 800;
-            color: var(--text-dark); margin-bottom: 10px;
+        /* ===================== FOOTER ===================== */
+        .db-footer {
+            text-align: center; margin-top: 60px; padding-top: 32px;
+            border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px;
         }
+        .db-footer strong { color: var(--gold); }
+        .db-footer a { color: var(--text-muted); text-decoration: none; }
+        .db-footer a:hover { color: var(--gold); }
 
-        .error-sub {
-            font-size: 14px; color: var(--text-muted);
-            line-height: 1.7; max-width: 320px; margin: 0 auto;
+        /* ===================== RESPONSIVE ===================== */
+        @media (max-width: 640px) {
+            .summary-grid { grid-template-columns: 1fr 1fr; }
+            .transactions-table th:nth-child(3),
+            .transactions-table td:nth-child(3),
+            .transactions-table th:nth-child(4),
+            .transactions-table td:nth-child(4) { display: none; }
+            .inv-modal-body { padding: 20px; }
         }
-
-        /* ═══════════════════════════════════════════════
-           RESPONSIVE
-        ═══════════════════════════════════════════════ */
-        @media (max-width: 520px) {
-            body { padding: 28px 12px 64px; }
-
-            .brand-bar { margin-bottom: 24px; }
-
-            .card-header, .card-body, .card-footer { padding-left: 24px; padding-right: 24px; }
-
-            .status-banner { padding: 20px 24px; gap: 16px; }
-
-            .status-icon-wrap { width: 50px; height: 50px; font-size: 24px; }
-
-            .status-amount { font-size: 28px; }
-
-            .overdue-alert { margin: 16px 16px 0; }
-
-            .detail-row { padding: 12px 16px; }
-
-            .breakdown-row { padding: 12px 16px; }
-
-            .error-card { padding: 40px 24px; }
-        }
-
-        @media (max-width: 380px) {
-            .header-invoice-num { font-size: 20px; }
-            .status-amount { font-size: 24px; }
+        @media (max-width: 400px) {
+            .summary-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Animated BG -->
-    <div class="bg-canvas" aria-hidden="true">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
+<!-- Loading -->
+<div id="loading-screen">
+    <div class="loading-logo">Book<span>Print</span> Pro</div>
+    <div class="loading-spinner"></div>
+</div>
 
-    <div class="page-wrapper">
+<!-- Orbs -->
+<div class="bg-orb orb1"></div>
+<div class="bg-orb orb2"></div>
 
-        <!-- Branding -->
-        <div class="brand-bar">
-            <div class="brand-logo">B</div>
-            <div class="brand-text">
-                <div class="brand-name">BookPrint <span>Pro</span></div>
-                <div class="brand-tagline">Secure Payment Portal</div>
-            </div>
-        </div>
+<!-- Content Mount -->
+<div id="app"></div>
 
-        <!-- Dynamic content root -->
-        <div id="root">
-            <div class="loading-wrap">
-                <div class="spinner-track" aria-label="Loading"></div>
-                <div class="loading-text">Loading your invoice…</div>
-            </div>
-        </div>
+<!-- Invoice Detail Modal -->
+<div class="modal-overlay" id="inv-modal-overlay" onclick="closeInvModal(event)">
+    <div class="inv-modal" id="inv-modal-content"></div>
+</div>
 
-        <!-- Page footer -->
-        <footer class="page-footer">
-            <p>Secured &amp; encrypted · BookPrint Pro · &copy; <span id="yr"></span></p>
-        </footer>
+<script>
+    // =============================================
+    // HELPERS
+    // =============================================
+    function fmt(v) {
+        return new Intl.NumberFormat('en-IN', {
+            style: 'currency', currency: 'INR', minimumFractionDigits: 2
+        }).format(v || 0);
+    }
 
-    </div>
+    function fmtDate(d, opts) {
+        if (!d) return 'N/A';
+        return new Date(d + 'T00:00:00').toLocaleDateString('en-IN',
+            opts || { year: 'numeric', month: 'short', day: 'numeric' }
+        );
+    }
 
-    <script>
-        // ── Set year ──────────────────────────────────
-        document.getElementById('yr').textContent = new Date().getFullYear();
+    function today() { return new Date().toISOString().split('T')[0]; }
 
-        // ── Helpers ───────────────────────────────────
-        function fmt(v) {
-            return new Intl.NumberFormat('en-IN', {
-                style: 'currency', currency: 'INR', minimumFractionDigits: 2
-            }).format(v || 0);
+    function closeInvModal(e) {
+        if (e.target === document.getElementById('inv-modal-overlay')) {
+            document.getElementById('inv-modal-overlay').classList.remove('open');
         }
+    }
 
-        function fmtDate(d) {
-            if (!d) return 'Upon Receipt';
-            // Parse as local date, not UTC
-            const parts = d.split('-');
-            if (parts.length === 3) {
-                const dt = new Date(+parts[0], +parts[1] - 1, +parts[2]);
-                return dt.toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
-            }
-            return d;
-        }
+    function openInvModal() {
+        document.getElementById('inv-modal-overlay').classList.add('open');
+    }
 
-        function payStatus(totalSell, amtPaid) {
-            const bal = (totalSell || 0) - (amtPaid || 0);
-            if (bal <= 0.01)         return 'paid';
-            if ((amtPaid || 0) > 0)  return 'partial';
-            return 'unpaid';
-        }
+    // =============================================
+    // URL PARSING
+    // =============================================
+    function parseUrl() {
+        const hash = window.location.hash.slice(1); // remove '#'
+        if (!hash) return null;
 
-        // ── Error renderer ───────────────────────────
-        function renderError(title, msg) {
-            document.getElementById('root').innerHTML = `
-                <div class="error-card">
-                    <div class="error-icon-wrap">🔒</div>
-                    <h1 class="error-title">${title}</h1>
-                    <p class="error-sub">${msg}</p>
-                </div>
-            `;
-            document.title = 'Invalid Link — BookPrint Pro';
-        }
-
-        // ── Main renderer ────────────────────────────
-        function render() {
-            const hash = window.location.hash || '';
-
-            // Support both  #data=BASE64  and  ?data=BASE64  (in hash portion)
-            const match = hash.match(/[#&?]data=([^&]*)/);
-
-            if (!match || !match[1]) {
-                renderError(
-                    'No Invoice Found',
-                    'This link appears incomplete or invalid. Please ask BookPrint Pro to resend your payment link.'
-                );
-                return;
-            }
-
-            let inv;
+        // NEW FORMAT: #dashboard?data=BASE64 — full customer dashboard
+        if (hash.startsWith('dashboard?')) {
+            const params = new URLSearchParams(hash.slice('dashboard?'.length));
+            const raw = params.get('data');
+            if (!raw) return null;
             try {
-                const decoded = decodeURIComponent(match[1]);
-                inv = JSON.parse(atob(decoded));
-            } catch (e) {
-                renderError(
-                    'Link Corrupted',
-                    'We couldn\'t read your invoice data. The link may have been altered. Please contact BookPrint Pro for a fresh link.'
-                );
-                return;
+                const json = JSON.parse(decodeURIComponent(escape(atob(raw))));
+                return { mode: 'dashboard', data: json };
+            } catch(e) { return null; }
+        }
+
+        // LEGACY FORMAT: #data=BASE64 — single invoice view
+        if (hash.startsWith('data=')) {
+            const raw = hash.slice(5);
+            try {
+                const json = JSON.parse(decodeURIComponent(escape(atob(raw))));
+                return { mode: 'single', data: json };
+            } catch(e) { return null; }
+        }
+
+        return null;
+    }
+
+    // =============================================
+    // RENDER: ACCESS DENIED
+    // =============================================
+    function renderAccessDenied() {
+        return `
+        <div class="denied-page">
+            <div class="denied-card">
+                <div class="denied-icon">🔒</div>
+                <h2>Invalid Link</h2>
+                <p>This payment link is invalid, expired, or has been revoked. Please contact your service provider and ask them to share a fresh payment link with you.</p>
+            </div>
+        </div>`;
+    }
+
+    // =============================================
+    // RENDER: FULL CUSTOMER DASHBOARD
+    // =============================================
+    function renderDashboard(d) {
+        const customer = d.customer || 'Valued Customer';
+        const invoices = d.invoices || [];
+        const bizName = d.businessName || 'BookPrint Pro Services';
+        const bizContact = d.businessContact || 'contact@bookprintpro.com';
+        const todayStr = today();
+
+        const todayFmt = new Date().toLocaleDateString('en-IN', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        });
+
+        // Aggregate stats
+        const totalBilled = invoices.reduce((s, i) => s + (i.totalSell || 0), 0);
+        const totalPaid = invoices.reduce((s, i) => s + (i.amtPaid || 0), 0);
+        const totalOutstanding = totalBilled - totalPaid;
+        const totalInvoices = invoices.length;
+        const unpaidCount = invoices.filter(i => (i.totalSell - i.amtPaid) > 0.01).length;
+
+        const hasOverdue = invoices.some(i =>
+            i.dueDate && i.dueDate < todayStr && (i.totalSell - i.amtPaid) > 0.01
+        );
+        const allPaid = totalOutstanding <= 0.01 && totalInvoices > 0;
+
+        // Banners
+        const bannerHTML = allPaid
+            ? `<div class="db-banner db-banner-success">
+                   <span class="db-banner-icon">🎉</span>
+                   <p>You have no outstanding dues. Thank you for your payments — we appreciate your trust!</p>
+               </div>`
+            : (hasOverdue
+                ? `<div class="db-banner db-banner-overdue">
+                       <span class="db-banner-icon">⚠️</span>
+                       <p>You have overdue payments. Please clear them at your earliest convenience to avoid any service disruption.</p>
+                   </div>`
+                : '');
+
+        // Summary cards
+        const summaryHTML = `
+        <div class="summary-grid">
+            <div class="summary-card card-billed">
+                <div class="summary-card-label">Total Billed</div>
+                <div class="summary-card-value">${fmt(totalBilled)}</div>
+                <div class="summary-card-sub">Across ${totalInvoices} invoice${totalInvoices !== 1 ? 's' : ''}</div>
+            </div>
+            <div class="summary-card card-paid">
+                <div class="summary-card-label">Total Paid</div>
+                <div class="summary-card-value">${fmt(totalPaid)}</div>
+                <div class="summary-card-sub">Payments received</div>
+            </div>
+            <div class="summary-card card-outstanding">
+                <div class="summary-card-label">Outstanding</div>
+                <div class="summary-card-value">${fmt(Math.max(totalOutstanding, 0))}</div>
+                <div class="summary-card-sub">Balance due</div>
+            </div>
+            <div class="summary-card card-invoices">
+                <div class="summary-card-label">Invoices</div>
+                <div class="summary-card-value">${totalInvoices}</div>
+                <div class="summary-card-sub">${unpaidCount} pending payment</div>
+            </div>
+        </div>`;
+
+        // Transactions table
+        const tableRows = invoices.map((inv, idx) => {
+            const bal = inv.totalSell - inv.amtPaid;
+            const isPaid = bal <= 0.01;
+            const isOverdue = !isPaid && inv.dueDate && inv.dueDate < todayStr;
+            const isPartial = !isPaid && (inv.amtPaid || 0) > 0;
+
+            let rowClass = '';
+            let badge = '';
+            if      (isPaid)    { rowClass = 'row-paid';    badge = '<span class="badge badge-paid">✓ Paid</span>'; }
+            else if (isOverdue) { rowClass = 'row-overdue'; badge = '<span class="badge badge-overdue">⚠ Overdue</span>'; }
+            else if (isPartial) { rowClass = 'row-partial'; badge = '<span class="badge badge-partial">⏳ Partial</span>'; }
+            else                { rowClass = '';              badge = '<span class="badge badge-unpaid">• Unpaid</span>'; }
+
+            return `
+            <tr class="${rowClass}">
+                <td>
+                    <div style="font-weight:700; font-size:12px; color: var(--gold);">${inv.invoiceNum || `#INV-${(inv.id||idx).toString().slice(-8).toUpperCase()}`}</div>
+                    <div style="font-size:11px; color:var(--text-muted);">${fmtDate(inv.date)}</div>
+                </td>
+                <td>
+                    <div style="font-weight:600;">${inv.title || '—'}</div>
+                    <div style="font-size:11px; color:var(--text-muted);">${inv.pages || '?'} pages × ${inv.qty || '?'} copies</div>
+                </td>
+                <td style="white-space:nowrap;">
+                    <div style="font-size:11px; color:var(--text-muted);">Due</div>
+                    <div style="font-weight:600; color:${isOverdue ? 'var(--danger)' : 'var(--text-main)'}; font-size:12px;">
+                        ${inv.dueDate ? fmtDate(inv.dueDate) : 'Upon Receipt'}
+                    </div>
+                </td>
+                <td style="font-weight:700;">${fmt(inv.totalSell)}</td>
+                <td style="color:var(--success); font-weight:600;">${fmt(inv.amtPaid)}</td>
+                <td style="color:${isPaid ? 'var(--success)' : 'var(--danger)'}; font-weight:800;">${fmt(Math.max(bal, 0))}</td>
+                <td>${badge}</td>
+                <td>
+                    <button class="btn-view" onclick='viewInvoice(${JSON.stringify(inv).replace(/'/g, "\\'")},"${isOverdue ? '1' : '0'}","${isPaid ? '1' : '0'}","${isPartial ? '1' : '0'}")'>
+                        View
+                    </button>
+                </td>
+            </tr>`;
+        }).join('');
+
+        return `
+        <div class="dashboard-wrap">
+            <div class="db-header">
+                <div class="db-brand">
+                    <div class="db-logo">B</div>
+                    <div>
+                        <div class="db-brand-name">${bizName.split(' ').slice(0,2).join(' ')} <span>${bizName.split(' ').slice(2).join(' ')}</span></div>
+                        <div class="db-brand-date">${todayFmt}</div>
+                    </div>
+                </div>
+                <div class="db-greeting">
+                    <h1>Hello, ${customer} 👋</h1>
+                    <p>Here is your complete account summary with all your print orders and payment history.</p>
+                </div>
+                ${bannerHTML}
+            </div>
+
+            ${summaryHTML}
+
+            <div class="section-title">Transaction History</div>
+
+            <div class="transactions-table-wrap">
+                ${invoices.length === 0
+                    ? '<div style="text-align:center; padding:48px; color:var(--text-muted);">No invoices found for your account.</div>'
+                    : `<div style="overflow-x:auto;"><table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th>Book / Job</th>
+                                <th>Due Date</th>
+                                <th>Total</th>
+                                <th>Paid</th>
+                                <th>Balance</th>
+                                <th>Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>${tableRows}</tbody>
+                    </table></div>`
+                }
+            </div>
+
+            <div class="db-footer">
+                <p>
+                    <strong>${bizName}</strong><br>
+                    For payment queries, contact us at <a href="mailto:${bizContact}">${bizContact}</a>
+                </p>
+                <p style="margin-top:12px; font-size:11px; opacity:0.5;">
+                    This is a secure, read-only account view. Your financial data is private.
+                </p>
+            </div>
+        </div>`;
+    }
+
+    // =============================================
+    // RENDER: SINGLE INVOICE (LEGACY)
+    // =============================================
+    function renderSingleInvoice(o) {
+        const balance = (o.totalSell || 0) - (o.amtPaid || 0);
+        const todayStr = today();
+        const isOverdue = o.dueDate && o.dueDate < todayStr && balance > 0.01;
+        const isPaid = balance <= 0.01;
+        const isPartial = !isPaid && (o.amtPaid || 0) > 0;
+
+        const statusLabel = isPaid ? 'Payment Complete' : isPartial ? 'Partially Paid' : 'Payment Due';
+        const statusColor = isPaid ? 'var(--success)' : isPartial ? 'var(--warning)' : 'var(--danger)';
+
+        const invoices = [{
+            invoiceNum: o.invoiceNum || `#INV-${Date.now().toString().slice(-8).toUpperCase()}`,
+            title: o.title, pages: o.pages, qty: o.qty,
+            sellPrice: o.sellPrice, totalSell: o.totalSell, amtPaid: o.amtPaid,
+            date: o.date, dueDate: o.dueDate
+        }];
+
+        const dashData = {
+            customer: o.customer || 'Customer',
+            invoices,
+            businessName: o.businessName || 'BookPrint Pro Services',
+            businessContact: o.businessContact || 'contact@bookprintpro.com'
+        };
+        return renderDashboard(dashData);
+    }
+
+    // =============================================
+    // VIEW INVOICE MODAL
+    // =============================================
+    function viewInvoice(inv, isOverdueStr, isPaidStr, isPartialStr) {
+        const isOverdue = isOverdueStr === '1';
+        const isPaid = isPaidStr === '1';
+        const isPartial = isPartialStr === '1';
+        const bal = (inv.totalSell || 0) - (inv.amtPaid || 0);
+
+        const modal = document.getElementById('inv-modal-content');
+        modal.innerHTML = `
+        <div class="inv-modal-header">
+            <h3>${inv.invoiceNum || '#INV-XXXXXXXX'}</h3>
+            <button class="inv-modal-close" onclick="document.getElementById('inv-modal-overlay').classList.remove('open')">×</button>
+        </div>
+        <div class="inv-modal-body">
+            ${isOverdue ? `<div class="inv-overdue-note">⚠️ This invoice is <strong>overdue</strong>. Please make payment at your earliest.</div>` : ''}
+
+            <div style="margin-top:${isOverdue ? '16px' : '0'};">
+                <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); margin-bottom:12px;">Order Details</div>
+                <div class="inv-row"><span class="inv-row-label">Book Title</span><span class="inv-row-val">${inv.title || '—'}</span></div>
+                <div class="inv-row"><span class="inv-row-label">Number of Pages</span><span class="inv-row-val">${inv.pages || '?'} pages</span></div>
+                <div class="inv-row"><span class="inv-row-label">Quantity</span><span class="inv-row-val">${inv.qty || '?'} ${inv.qty === 1 ? 'copy' : 'copies'}</span></div>
+                <div class="inv-row"><span class="inv-row-label">Unit Price</span><span class="inv-row-val">${fmt(inv.sellPrice)}</span></div>
+                <div class="inv-row"><span class="inv-row-label">Order Date</span><span class="inv-row-val">${fmtDate(inv.date, { year:'numeric', month:'long', day:'numeric' })}</span></div>
+                <div class="inv-row">
+                    <span class="inv-row-label" style="color:${isOverdue ? 'var(--danger)' : 'inherit'}">Due Date</span>
+                    <span class="inv-row-val" style="color:${isOverdue ? 'var(--danger)' : 'inherit'}">
+                        ${inv.dueDate ? fmtDate(inv.dueDate, { year:'numeric', month:'long', day:'numeric' }) : 'Upon Receipt'}
+                        ${isOverdue ? ' ⚠️' : ''}
+                    </span>
+                </div>
+            </div>
+
+            <div class="inv-totals">
+                <div class="inv-total-row">
+                    <span style="color:var(--text-muted)">Total Amount</span>
+                    <span style="font-weight:600">${fmt(inv.totalSell)}</span>
+                </div>
+                <div class="inv-total-row">
+                    <span style="color:var(--success)">Amount Paid</span>
+                    <span style="color:var(--success); font-weight:600">− ${fmt(inv.amtPaid)}</span>
+                </div>
+                <div class="inv-total-row grand">
+                    <span>${isPaid ? '✓ Fully Settled' : 'Balance Due'}</span>
+                    <span style="color:${isPaid ? 'var(--success)' : 'var(--danger)'}">${fmt(Math.max(bal, 0))}</span>
+                </div>
+            </div>
+
+            ${isPaid ? `
+            <div style="text-align:center; padding:24px; color:var(--success);">
+                <div style="font-size:36px; margin-bottom:8px;">✅</div>
+                <div style="font-weight:700;">This invoice is fully paid. Thank you!</div>
+            </div>` : ''}
+        </div>`;
+
+        openInvModal();
+    }
+
+    // =============================================
+    // INIT
+    // =============================================
+    window.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+            const parsed = parseUrl();
+            const app = document.getElementById('app');
+            const loader = document.getElementById('loading-screen');
+
+            if (!parsed) {
+                app.innerHTML = renderAccessDenied();
+            } else if (parsed.mode === 'dashboard') {
+                app.innerHTML = renderDashboard(parsed.data);
+            } else if (parsed.mode === 'single') {
+                app.innerHTML = renderSingleInvoice(parsed.data);
+            } else {
+                app.innerHTML = renderAccessDenied();
             }
 
-            const {
-                invoiceNum, customer, title, pages, qty,
-                sellPrice, totalSell, amtPaid,
-                date, dueDate,
-                businessName, businessContact
-            } = inv;
-
-            const balance    = (totalSell || 0) - (amtPaid || 0);
-            const status     = payStatus(totalSell, amtPaid);
-            const today      = new Date().toISOString().split('T')[0];
-            const isOverdue  = dueDate && dueDate < today && status !== 'paid';
-            const biz        = businessName  || 'BookPrint Pro Services';
-            const contact    = businessContact || 'contact@bookprintpro.com';
-
-            // Status config
-            const SC = {
-                paid: {
-                    bannerClass: 'paid',    iconClass: 'icon-paid',
-                    pillClass: 'pill-paid', pillLabel: 'Payment Complete',
-                    amountClass: 'amount-paid',   totalClass: 'total-paid',
-                    icon: '✅', note: 'Nothing outstanding'
-                },
-                partial: {
-                    bannerClass: 'partial',   iconClass: 'icon-partial',
-                    pillClass: 'pill-partial', pillLabel: 'Partially Paid',
-                    amountClass: 'amount-partial', totalClass: 'total-partial',
-                    icon: '⏳', note: 'Remaining balance due'
-                },
-                unpaid: {
-                    bannerClass: 'unpaid',   iconClass: 'icon-unpaid',
-                    pillClass: 'pill-unpaid', pillLabel: 'Payment Due',
-                    amountClass: 'amount-unpaid', totalClass: 'total-unpaid',
-                    icon: '⚠️', note: 'Full amount outstanding'
-                }
-            }[status];
-
-            const displayAmount = status === 'paid' ? 0 : balance;
-
-            document.title = `Invoice ${invoiceNum} — BookPrint Pro`;
-
-            const overdueHTML = isOverdue ? `
-                <div class="overdue-alert" role="alert">
-                    <span class="overdue-icon">🚨</span>
-                    <div class="overdue-text">
-                        <strong>This invoice is overdue</strong>
-                        Due date was ${fmtDate(dueDate)}. Please settle this payment immediately to avoid any disruptions.
-                    </div>
-                </div>
-            ` : '';
-
-            const dueStyle  = isOverdue ? 'color:#DC2626; font-weight:700;' : '';
-            const dueSuffix = isOverdue ? ' ⚠️' : '';
-
-            const successHTML = status === 'paid' ? `
-                <div class="success-box">
-                    <span class="success-emoji">🎉</span>
-                    <div class="success-title">Your payment is complete. Thank you!</div>
-                    <div class="success-sub">We appreciate your prompt settlement. Your account with BookPrint Pro is fully cleared.</div>
-                </div>
-            ` : '';
-
-            const bodyTopMargin = isOverdue ? '24px' : '0';
-
-            document.getElementById('root').innerHTML = `
-                <div class="card" role="main">
-
-                    <!-- ── Header ── -->
-                    <div class="card-header">
-                        <div class="header-top">
-                            <div>
-                                <div class="header-label">Invoice Reference</div>
-                                <div class="header-invoice-num">${escHtml(invoiceNum)}</div>
-                                <div class="header-business">${escHtml(biz)}</div>
-                            </div>
-                            <div class="header-badge-secure">
-                                <span class="lock-dot"></span>
-                                Secure
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ── Status Banner ── -->
-                    <div class="status-banner ${SC.bannerClass}">
-                        <div class="status-icon-wrap ${SC.iconClass}" aria-hidden="true">${SC.icon}</div>
-                        <div class="status-info">
-                            <div class="status-pill ${SC.pillClass}">
-                                <span class="pill-dot"></span>
-                                ${SC.pillLabel}
-                            </div>
-                            <div class="status-amount ${SC.amountClass}">${fmt(displayAmount)}</div>
-                            <div class="status-note">${SC.note}</div>
-                        </div>
-                    </div>
-
-                    ${overdueHTML}
-
-                    <!-- ── Body ── -->
-                    <div class="card-body">
-
-                        <!-- Order Details -->
-                        <div class="section-label" style="margin-top:${bodyTopMargin};">Order Details</div>
-                        <div class="detail-table" role="table" aria-label="Order Details">
-                            ${detailRow('Customer', escHtml(customer))}
-                            ${detailRow('Book Title', escHtml(title))}
-                            ${detailRow('Pages', `${pages} pages`)}
-                            ${detailRow('Quantity', `${qty} cop${qty === 1 ? 'y' : 'ies'}`)}
-                            ${detailRow('Price per Copy', fmt(sellPrice))}
-                            ${detailRow('Order Date', fmtDate(date))}
-                            ${detailRow('Due Date',
-                                `<span style="${dueStyle}">${fmtDate(dueDate)}${dueSuffix}</span>`,
-                                isOverdue ? 'color:#DC2626;' : ''
-                            )}
-                        </div>
-
-                        <!-- Payment Breakdown -->
-                        <div class="section-label">Payment Breakdown</div>
-                        <div class="breakdown-box">
-                            <div class="breakdown-row">
-                                <span class="breakdown-label">Total Amount Billed</span>
-                                <span class="breakdown-value">${fmt(totalSell)}</span>
-                            </div>
-                            <div class="breakdown-row paid-credit">
-                                <span class="breakdown-label">Amount Paid</span>
-                                <span class="breakdown-value">− ${fmt(amtPaid)}</span>
-                            </div>
-                            <div class="breakdown-row total-row">
-                                <span>${status === 'paid' ? '✅ Fully Settled' : 'Balance Remaining'}</span>
-                                <span class="${SC.totalClass}">${fmt(displayAmount)}</span>
-                            </div>
-                        </div>
-
-                        ${successHTML}
-
-                    </div>
-
-                    <!-- ── Footer ── -->
-                    <div class="card-footer">
-                        <p>
-                            Questions about this invoice?<br>
-                            Contact <strong>${escHtml(biz)}</strong> — <a href="mailto:${escHtml(contact)}">${escHtml(contact)}</a>
-                        </p>
-                    </div>
-
-                </div>
-            `;
-        }
-
-        function detailRow(label, value, labelStyle = '') {
-            return `
-                <div class="detail-row" role="row">
-                    <span class="detail-label" style="${labelStyle}">${label}</span>
-                    <span class="detail-value">${value}</span>
-                </div>
-            `;
-        }
-
-        function escHtml(str) {
-            if (str == null) return '';
-            return String(str)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;');
-        }
-
-        // Re-render if hash changes (deep link navigation)
-        window.addEventListener('hashchange', render);
-        render();
-    </script>
-
+            loader.style.transition = 'opacity 0.4s';
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 400);
+        }, 500);
+    });
+</script>
 </body>
 </html>

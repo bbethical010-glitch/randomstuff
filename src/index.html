@@ -133,149 +133,8 @@
             .main-wrapper { width: 100%; }
         }
 
-        /* ============================================================
-           PUBLIC DEBTOR VIEW - Completely isolated, clean design
-           ============================================================ */
-        #public-invoice-view {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(135deg, #0A192F 0%, #172A45 50%, #0d2137 100%);
-            overflow-y: auto;
-            z-index: 99999;
-            padding: 40px 20px 60px;
-        }
-        #public-invoice-view.active { display: block; animation: fadeIn 0.4s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .pub-card {
-            max-width: 560px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 28px;
-            overflow: hidden;
-            box-shadow: 0 32px 80px rgba(0,0,0,0.4);
-            animation: riseUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes riseUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        .pub-header {
-            background: linear-gradient(135deg, #0A192F, #172A45);
-            padding: 36px 40px;
-            color: white;
-            text-align: center;
-        }
-        .pub-logo {
-            width: 52px; height: 52px;
-            background: linear-gradient(135deg, #D4AF37, #B8860B);
-            border-radius: 14px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 26px; font-weight: 800; color: #0A192F;
-            margin: 0 auto 16px;
-            box-shadow: 0 6px 20px rgba(212,175,55,0.3);
-        }
-        .pub-business-name { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
-        .pub-invoice-num { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 4px; letter-spacing: 0.05em; }
-
-        .pub-body { padding: 36px 40px; }
-
-        .pub-status-banner {
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            margin-bottom: 28px;
-        }
-        .pub-status-banner.paid-banner { background: linear-gradient(135deg, #DCFCE7, #BBF7D0); border: 1px solid #86EFAC; }
-        .pub-status-banner.unpaid-banner { background: linear-gradient(135deg, #FEF2F2, #FEE2E2); border: 1px solid #FCA5A5; }
-        .pub-status-banner.partial-banner { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border: 1px solid #FCD34D; }
-
-        .pub-status-icon { font-size: 36px; margin-bottom: 8px; }
-        .pub-status-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
-        .pub-status-label.paid-text { color: #166534; }
-        .pub-status-label.unpaid-text { color: #991B1B; }
-        .pub-status-label.partial-text { color: #92400E; }
-
-        .pub-balance-amount { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
-        .pub-balance-amount.paid-amount { color: #166534; }
-        .pub-balance-amount.unpaid-amount { color: #DC2626; }
-        .pub-balance-amount.partial-amount { color: #D97706; }
-        .pub-balance-note { font-size: 13px; color: #64748B; }
-
-        .pub-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94A3B8; margin-bottom: 12px; }
-
-        .pub-detail-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 13px 0;
-            border-bottom: 1px solid #F1F5F9;
-        }
-        .pub-detail-row:last-child { border-bottom: none; }
-        .pub-detail-label { font-size: 14px; color: #64748B; }
-        .pub-detail-value { font-size: 14px; font-weight: 600; color: #1E293B; text-align: right; max-width: 60%; }
-
-        .pub-breakdown-box {
-            background: #F8FAFC;
-            border-radius: 16px;
-            padding: 20px 24px;
-            margin-bottom: 24px;
-        }
-        .pub-breakdown-row {
-            display: flex; justify-content: space-between;
-            padding: 8px 0;
-            font-size: 14px;
-        }
-        .pub-breakdown-row.total-row {
-            border-top: 1px solid #E2E8F0;
-            margin-top: 8px;
-            padding-top: 14px;
-            font-size: 16px;
-            font-weight: 700;
-        }
-        .pub-breakdown-row.paid-row { color: #10B981; }
-        .pub-breakdown-row.balance-row { color: #EF4444; font-weight: 700; }
-
-        .pub-overdue-alert {
-            background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
-            border: 1px solid #FCA5A5;
-            border-radius: 12px;
-            padding: 14px 18px;
-            display: flex; align-items: center; gap: 12px;
-            margin-bottom: 24px;
-            font-size: 14px;
-            color: #991B1B;
-            font-weight: 500;
-        }
-        .pub-success-banner {
-            background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
-            border: 1px solid #86EFAC;
-            border-radius: 12px;
-            padding: 20px 24px;
-            text-align: center;
-            margin-bottom: 0;
-        }
-        .pub-success-banner h3 { font-size: 17px; font-weight: 700; color: #166534; margin-bottom: 4px; }
-        .pub-success-banner p { font-size: 13px; color: #166534; opacity: 0.8; }
-
-        .pub-footer {
-            background: #F8FAFC;
-            border-top: 1px solid #E2E8F0;
-            padding: 20px 40px;
-            text-align: center;
-        }
-        .pub-footer p { font-size: 12px; color: #94A3B8; }
-        .pub-footer strong { color: #64748B; }
-
-        .pub-error-card {
-            max-width: 420px;
-            margin: 80px auto;
-            background: white;
-            border-radius: 24px;
-            padding: 48px 40px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .pub-error-card h2 { font-size: 20px; color: #1E293B; margin-bottom: 12px; font-weight: 700; }
-        .pub-error-card p { font-size: 14px; color: #64748B; }
     </style>
+
 </head>
 <body>
     <!-- ===================== ADMIN APP ===================== -->
@@ -307,6 +166,12 @@
                 <a href="#" class="nav-link" onclick="showSection('debtors', event)">
                     <svg><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     <span>Debtors</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('expenses', event)">
+                    <svg><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                    <span>Expenses</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -402,8 +267,8 @@
             <!-- Invoices -->
             <section id="invoices" class="page-section">
                 <div class="stat-card">
-                    <h3 style="margin-bottom: 8px;">Credit Sales & Invoices</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 14px;">Share payment links with debtors. Click 🔗 to copy a secure link for any invoice.</p>
+                    <h3 style="margin-bottom: 8px;">Credit Sales &amp; Invoices</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 14px;">Share full account dashboards with customers. Each link shows all their invoices in a professional portal.</p>
                     <div id="invoices-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;"></div>
                 </div>
             </section>
@@ -412,22 +277,68 @@
             <section id="debtors" class="page-section">
                 <div class="stat-card" style="border-left: 5px solid var(--danger); margin-bottom: 24px;">
                     <h3 style="color: var(--danger); margin-bottom: 6px;">Active Debtors</h3>
-                    <p style="color: var(--text-muted); font-size: 14px;">Click 🔗 to copy a shareable payment link you can send to any debtor.</p>
+                    <p style="color: var(--text-muted); font-size: 14px;">Each customer gets one persistent dashboard link showing ALL their invoices. Click <strong>📊 Share Dashboard</strong> to copy it instantly.</p>
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Customer Name</th>
-                                <th>Total Bill</th>
-                                <th>Amount Paid</th>
-                                <th>Remaining</th>
-                                <th>Due Date</th>
+                                <th>Customer</th>
+                                <th>Invoices</th>
+                                <th>Total Billed</th>
+                                <th>Total Paid</th>
+                                <th>Outstanding</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody id="debtors-body"></tbody>
                     </table>
+                </div>
+            </section>
+
+            <!-- Expenses -->
+            <section id="expenses" class="page-section">
+                <div class="stats-grid" id="expense-stats-grid"></div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <div style="display: flex; gap: 16px; align-items: center;">
+                            <h3 style="font-size: 18px; font-weight: 700;">All Business Expenses</h3>
+                        </div>
+                        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                            <select id="filter-expense-cat" onchange="renderExpenses()" style="padding: 10px; border-radius: 10px; border: 1px solid var(--border);">
+                                <option value="all">All Categories</option>
+                                <option value="Consumables">Consumables</option>
+                                <option value="Equipment">Equipment</option>
+                                <option value="Utilities">Utilities</option>
+                                <option value="Miscellaneous">Miscellaneous</option>
+                            </select>
+                            <input type="date" id="filter-exp-from" onchange="renderExpenses()" style="padding: 9px; border-radius: 10px; border: 1px solid var(--border); font-size:13px;" title="From date">
+                            <input type="date" id="filter-exp-to" onchange="renderExpenses()" style="padding: 9px; border-radius: 10px; border: 1px solid var(--border); font-size:13px;" title="To date">
+                            <button class="btn btn-primary" style="padding: 10px 20px; font-size: 13px;" onclick="openExpenseModal()">+ Add Expense</button>
+                        </div>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>Expense Name</th>
+                                    <th>Qty / Units</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenses-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Category Breakdown -->
+                <div class="stat-card" style="margin-top: 32px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px;">Expense Breakdown by Category</h3>
+                    <div id="expense-category-bars"></div>
                 </div>
             </section>
 
@@ -447,9 +358,40 @@
                         <div class="stat-value" id="rep-collection">0%</div>
                     </div>
                 </div>
+
+                <!-- P&L Summary -->
+                <div class="stats-grid" style="margin-top: 0;">
+                    <div class="stat-card" style="border-left: 4px solid #8B5CF6;">
+                        <div class="stat-label">Total Operational Expenses</div>
+                        <div class="stat-value" id="rep-total-expenses" style="color: #8B5CF6;">₹0.00</div>
+                    </div>
+                    <div class="stat-card" style="border-left: 4px solid var(--success);">
+                        <div class="stat-label">True Net Profit</div>
+                        <div class="stat-value" id="rep-true-profit" style="color: var(--success);">₹0.00</div>
+                        <div class="stat-trend" style="color: var(--text-muted);">Revenue − Printing Costs − Operational Exp.</div>
+                    </div>
+                </div>
+
+                <!-- P&L Breakdown -->
+                <div class="stat-card" style="margin-top: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px;">Profit &amp; Loss Summary</h3>
+                    <div id="pl-breakdown"></div>
+                </div>
+
+                <!-- Expense vs Revenue Trend -->
+                <div class="stat-card" style="margin-top: 24px;">
+                    <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 20px;">Expense vs Revenue Trend (Last 6 Months)</h3>
+                    <div id="trend-chart" style="height: 220px; display: flex; align-items: flex-end; justify-content: space-around; padding-bottom: 24px; border-bottom: 1px solid var(--border); gap: 8px;"></div>
+                    <div style="display: flex; gap: 24px; margin-top: 16px; font-size: 12px; font-weight: 600; color: var(--text-muted);">
+                        <span style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:12px; background:var(--primary); border-radius:3px; display:inline-block;"></span>Revenue</span>
+                        <span style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:12px; background:#8B5CF6; border-radius:3px; display:inline-block;"></span>Expenses</span>
+                        <span style="display:flex; align-items:center; gap:6px;"><span style="width:12px; height:12px; background:var(--accent); border-radius:3px; display:inline-block;"></span>Profit</span>
+                    </div>
+                </div>
+
                 <div class="stat-card" style="margin-top: 32px; border: 1px solid var(--danger); background: #FFF5F5;">
                     <h3 style="color: var(--danger); margin-bottom: 12px;">Danger Zone</h3>
-                    <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 20px;">Wipe all business data, orders, and invoices. This action cannot be undone.</p>
+                    <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 20px;">Wipe all business data, orders, invoices, and expenses. This action cannot be undone.</p>
                     <button class="btn btn-outline" style="border-color: var(--danger); color: var(--danger);" onclick="clearAllData()">Clear All Business Data</button>
                 </div>
             </section>
@@ -542,6 +484,55 @@
         </div>
     </div>
 
+    <!-- ===================== EXPENSE ENTRY MODAL ===================== -->
+    <div class="modal-overlay" id="expense-modal">
+        <div class="modal" style="max-width: 580px;">
+            <div class="modal-header">
+                <h3 id="expense-modal-title">Add Expense</h3>
+                <span onclick="closeModal('expense-modal')" style="cursor:pointer; font-size: 24px;">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="expense-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="expCategory" required>
+                                <option value="Consumables">🖨️ Consumables</option>
+                                <option value="Equipment">🔧 Equipment</option>
+                                <option value="Utilities">⚡ Utilities</option>
+                                <option value="Miscellaneous">📦 Miscellaneous</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (₹)</label>
+                            <input type="number" id="expAmount" step="0.01" required placeholder="0.00">
+                        </div>
+                        <div class="form-group full">
+                            <label>Expense Name</label>
+                            <input type="text" id="expDescription" required placeholder="e.g. HP 803 Black Ink Cartridge, Binding Rolls, Electricity Bill">
+                        </div>
+                        <div class="form-group">
+                            <label>Date</label>
+                            <input type="date" id="expDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity / Units</label>
+                            <input type="text" id="expQty" placeholder="e.g. 2 cartridges, 500 sheets">
+                        </div>
+                        <div class="form-group full">
+                            <label>Vendor / Notes</label>
+                            <input type="text" id="expVendor" placeholder="Vendor name or additional notes">
+                        </div>
+                    </div>
+                    <div style="margin-top: 32px; display: flex; justify-content: flex-end; gap: 16px;">
+                        <button type="button" class="btn btn-outline" onclick="closeModal('expense-modal')">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="expense-save-btn">Save Expense</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <!-- ===================== PUBLIC DEBTOR VIEW ===================== -->
     <div id="public-invoice-view">
         <!-- Content rendered by JS -->
@@ -552,7 +543,9 @@
         // STATE
         // =============================================
         let orders = JSON.parse(localStorage.getItem('bp_orders')) || [];
+        let expenses = JSON.parse(localStorage.getItem('bp_expenses')) || [];
         let currentEditId = null;
+        let currentExpenseEditId = null;
 
         // =============================================
         // INIT
@@ -565,66 +558,108 @@
             renderAll();
             document.getElementById('orderDate').valueAsDate = new Date();
             document.getElementById('order-form').onsubmit = handleSaveOrder;
+            document.getElementById('expense-form').onsubmit = handleSaveExpense;
         });
 
         // =============================================
-        // PUBLIC DEBTOR LINK SYSTEM
-        // Uses URL hash:  #invoice?id=ORDER_ID&t=TOKEN
-        // Token is stored in localStorage alongside each order
+        // CUSTOMER DASHBOARD LINK SYSTEM
+        // Each customer gets one persistent token.
+        // Link encodes ALL their invoices as a dashboard snapshot.
+        // Hosted: debtor.html#dashboard?data=BASE64
         // =============================================
 
-        function generateToken() {
-            return Math.random().toString(36).substring(2, 12) + Date.now().toString(36);
-        }
+        const DEBTOR_PAGE_URL = 'https://bbethical010-glitch.github.io/randomstuff/debtor.html';
 
-        function getOrCreateToken(orderId) {
-            const storeKey = `bp_token_${orderId}`;
-            let token = localStorage.getItem(storeKey);
+        function getOrCreateCustomerToken(customerName) {
+            const key = `bp_cust_token_${customerName.toLowerCase().replace(/\s+/g,'_')}`;
+            let token = localStorage.getItem(key);
             if (!token) {
-                token = generateToken();
-                localStorage.setItem(storeKey, token);
+                // Stable token: never changes for this customer
+                token = 'CUST-' + Math.random().toString(36).substr(2,5).toUpperCase() + '-' + Date.now().toString(36).toUpperCase();
+                localStorage.setItem(key, token);
             }
             return token;
         }
 
+        function buildCustomerDashboardLink(customerName) {
+            const customerOrders = orders.filter(o => o.customer === customerName);
+            if (!customerOrders.length) return '';
+            const token = getOrCreateCustomerToken(customerName);
+            // Encode ONLY customer-facing data — NO costs, NO profits
+            const payload = {
+                type: 'dashboard',
+                token: token,
+                customer: customerName,
+                businessName: 'BookPrint Pro Services',
+                businessContact: 'contact@bookprintpro.com',
+                invoices: customerOrders.map(o => ({
+                    invoiceNum: `#INV-${o.id.toString().slice(-8).toUpperCase()}`,
+                    id: o.id,
+                    title: o.title,
+                    pages: o.pages,
+                    qty: o.qty,
+                    sellPrice: o.sellPrice,
+                    totalSell: o.totalSell,
+                    amtPaid: o.amtPaid,
+                    date: o.date,
+                    dueDate: o.dueDate || ''
+                }))
+            };
+            const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+            return `${DEBTOR_PAGE_URL}#dashboard?data=${encoded}`;
+        }
+
+        // Legacy single-invoice link (still works for older shares)
         function buildPublicLink(orderId) {
-            const token = getOrCreateToken(orderId);
-            const base = `${window.location.origin}${window.location.pathname}`;
-            return `${base}#invoice?id=${orderId}&t=${token}`;
+            const o = orders.find(x => x.id === orderId);
+            if (!o) return '';
+            const payload = {
+                invoiceNum: `#INV-${o.id.toString().slice(-8).toUpperCase()}`,
+                customer: o.customer, title: o.title, pages: o.pages, qty: o.qty,
+                sellPrice: o.sellPrice, totalSell: o.totalSell, amtPaid: o.amtPaid,
+                date: o.date, dueDate: o.dueDate || '',
+                businessName: 'BookPrint Pro Services', businessContact: 'contact@bookprintpro.com'
+            };
+            const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+            return `${DEBTOR_PAGE_URL}#data=${encoded}`;
         }
 
-        function copyShareLink(orderId) {
-            const link = buildPublicLink(orderId);
+        function copyDashboardLink(customerName) {
+            const link = buildCustomerDashboardLink(customerName);
+            if (!link) return;
+            const safeKey = customerName.replace(/\s+/g, '-');
             navigator.clipboard.writeText(link).then(() => {
-                showCopyFeedback(orderId);
+                showCustomerCopyFeedback(safeKey);
             }).catch(() => {
-                prompt('Copy this link to share with your customer:', link);
+                prompt('Copy this dashboard link to share with ' + customerName + ':', link);
             });
         }
 
-        function showCopyFeedback(orderId) {
-            // Update all copy buttons for this order
-            document.querySelectorAll(`[data-copy-id="${orderId}"]`).forEach(btn => {
-                btn.textContent = '✅ Copied!';
+        function showCustomerCopyFeedback(safeKey) {
+            document.querySelectorAll(`[data-cust-key="${safeKey}"]`).forEach(btn => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
                 btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.innerHTML = '🔗 Copy Link';
-                    btn.classList.remove('copied');
-                }, 2500);
+                setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2500);
             });
         }
 
-        function checkPublicLink() {
-            const hash = window.location.hash;
-            if (!hash.startsWith('#invoice?')) return false;
-
-            const params = new URLSearchParams(hash.slice('#invoice?'.length));
-            const id = parseInt(params.get('id'));
-            const token = params.get('t');
-
-            showPublicView(id, token);
-            return true;
+        // Legacy copy link (used from Invoices section)
+        function copyShareLink(orderId) {
+            // Now generates customer dashboard link (uses all orders for same customer)
+            const o = orders.find(x => x.id === orderId);
+            if (!o) return;
+            const link = buildCustomerDashboardLink(o.customer);
+            if (!link) return;
+            navigator.clipboard.writeText(link).then(() => {
+                document.querySelectorAll(`[data-copy-id="${orderId}"]`).forEach(btn => {
+                    btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+                    setTimeout(() => { btn.innerHTML = '📊 Share Dashboard'; btn.classList.remove('copied'); }, 2500);
+                });
+            }).catch(() => { prompt('Copy this link:', link); });
         }
+
+        function checkPublicLink() { return false; }
 
         function showPublicView(orderId, token) {
             const view = document.getElementById('public-invoice-view');
@@ -851,12 +886,15 @@
             renderOrdersTable(orders);
             renderDebtors();
             renderInvoices();
+            renderExpenses();
         }
 
         function renderDashboard() {
             const revenue = orders.reduce((s, o) => s + o.totalSell, 0);
-            const costs = orders.reduce((s, o) => s + o.totalCost, 0);
-            const profit = revenue - costs;
+            const prodCosts = orders.reduce((s, o) => s + o.totalCost, 0);
+            const overhead = expenses.reduce((s, e) => s + e.amount, 0);
+            const totalCosts = prodCosts + overhead;
+            const profit = revenue - totalCosts;
             const debt = orders.reduce((s, o) => s + (o.totalSell - o.amtPaid), 0);
 
             document.getElementById('stats-grid').innerHTML = `
@@ -866,14 +904,19 @@
                     <div class="stat-trend trend-up">Collected volume</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-label">Total Costs</div>
-                    <div class="stat-value">${formatCurrency(costs)}</div>
-                    <div class="stat-trend">Production expenses</div>
+                    <div class="stat-label">Production Costs</div>
+                    <div class="stat-value">${formatCurrency(prodCosts)}</div>
+                    <div class="stat-trend">Raw material & printing</div>
+                </div>
+                <div class="stat-card" style="border-left: 4px solid #8B5CF6;">
+                    <div class="stat-label">Overhead Expenses</div>
+                    <div class="stat-value" style="color: #8B5CF6;">${formatCurrency(overhead)}</div>
+                    <div class="stat-trend">Ink, binding, maintenance</div>
                 </div>
                 <div class="stat-card" style="border-bottom: 4px solid var(--accent);">
-                    <div class="stat-label">Estimated Profit</div>
-                    <div class="stat-value" style="color: var(--success)">${formatCurrency(profit)}</div>
-                    <div class="stat-trend trend-up">Net efficiency</div>
+                    <div class="stat-label">True Net Profit</div>
+                    <div class="stat-value" style="color: ${profit >= 0 ? 'var(--success)' : 'var(--danger)'}">${formatCurrency(profit)}</div>
+                    <div class="stat-trend ${profit >= 0 ? 'trend-up' : 'trend-down'}">Revenue − All Costs</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Outstanding Credit</div>
@@ -882,17 +925,82 @@
                 </div>
             `;
 
-            const maxVal = Math.max(revenue, costs, profit, 1);
+            const maxVal = Math.max(revenue, totalCosts, profit > 0 ? profit : 0, overhead, 1);
             const h = 200;
             document.getElementById('chart-area').innerHTML = `
-                <div style="background: var(--primary); width: 60px; height: ${(revenue/maxVal)*h}px; border-radius: 8px 8px 0 0;" title="Revenue"></div>
-                <div style="background: var(--text-muted); width: 60px; height: ${(costs/maxVal)*h}px; border-radius: 8px 8px 0 0;" title="Cost"></div>
-                <div style="background: var(--accent); width: 60px; height: ${(profit/maxVal)*h}px; border-radius: 8px 8px 0 0;" title="Profit"></div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                    <div style="background: var(--primary); width: 52px; height: ${(revenue/maxVal)*h}px; border-radius: 8px 8px 0 0; min-height: 4px;" title="Revenue: ${formatCurrency(revenue)}"></div>
+                    <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">Revenue</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                    <div style="background: var(--text-muted); width: 52px; height: ${(prodCosts/maxVal)*h}px; border-radius: 8px 8px 0 0; min-height: 4px;" title="Prod Cost: ${formatCurrency(prodCosts)}"></div>
+                    <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">Prod.</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                    <div style="background: #8B5CF6; width: 52px; height: ${(overhead/maxVal)*h}px; border-radius: 8px 8px 0 0; min-height: 4px;" title="Overhead: ${formatCurrency(overhead)}"></div>
+                    <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">Overhead</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+                    <div style="background: var(--accent); width: 52px; height: ${((profit > 0 ? profit : 0)/maxVal)*h}px; border-radius: 8px 8px 0 0; min-height: 4px;" title="Profit: ${formatCurrency(profit)}"></div>
+                    <span style="font-size: 10px; color: var(--text-muted); font-weight: 600;">Profit</span>
+                </div>
             `;
 
             document.getElementById('rep-annual-rev').innerText = formatCurrency(revenue);
             document.getElementById('rep-avg-order').innerText = formatCurrency(revenue / (orders.length || 1));
             document.getElementById('rep-collection').innerText = Math.round(((revenue - debt) / (revenue || 1)) * 100) + '%';
+            document.getElementById('rep-total-expenses').innerText = formatCurrency(overhead);
+            document.getElementById('rep-true-profit').innerText = formatCurrency(profit);
+            document.getElementById('rep-true-profit').style.color = profit >= 0 ? 'var(--success)' : 'var(--danger)';
+
+            // P&L Breakdown
+            const plEl = document.getElementById('pl-breakdown');
+            if (plEl) {
+                const rows = [
+                    { label: 'Total Revenue', val: revenue, color: 'var(--primary)', sign: '+' },
+                    { label: 'Printing / Production Costs', val: prodCosts, color: 'var(--text-muted)', sign: '-' },
+                    { label: 'Operational Expenses', val: overhead, color: '#8B5CF6', sign: '-' },
+                    { label: 'Net Profit', val: profit, color: profit >= 0 ? 'var(--success)' : 'var(--danger)', sign: profit >= 0 ? '=' : '=', bold: true }
+                ];
+                plEl.innerHTML = rows.map((r, i) => `
+                    <div style="display:flex; justify-content:space-between; align-items:center; padding: 14px 0;
+                        border-bottom:${i < rows.length-1 ? '1px solid var(--border)' : 'none'};
+                        font-weight:${r.bold ? '800' : '500'}; font-size:${r.bold ? '17px' : '14px'};">
+                        <span style="color:var(--text-dark);">${r.label}</span>
+                        <span style="color:${r.color};">${r.sign} ${formatCurrency(Math.abs(r.val))}</span>
+                    </div>
+                `).join('');
+            }
+
+            // Expense vs Revenue Trend (last 6 months)
+            const trendEl = document.getElementById('trend-chart');
+            if (trendEl) {
+                const months = [];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date(); d.setMonth(d.getMonth() - i);
+                    months.push(d.toISOString().slice(0, 7));
+                }
+                const trendData = months.map(m => {
+                    const rev = orders.filter(o => o.date && o.date.startsWith(m)).reduce((s, o) => s + o.totalSell, 0);
+                    const exp = expenses.filter(e => e.date && e.date.startsWith(m)).reduce((s, e) => s + e.amount, 0);
+                    const prc = orders.filter(o => o.date && o.date.startsWith(m)).reduce((s, o) => s + o.totalCost, 0);
+                    const pro = rev - prc - exp;
+                    const label = new Date(m + '-01').toLocaleDateString('en-IN', { month: 'short', year: '2-digit' });
+                    return { label, rev, exp: exp + prc, pro };
+                });
+                const maxT = Math.max(...trendData.flatMap(t => [t.rev, t.exp, Math.max(t.pro, 0)]), 1);
+                const barH = 180;
+                trendEl.innerHTML = trendData.map(t => `
+                    <div style="display:flex; flex-direction:column; align-items:center; gap:4px; flex:1;">
+                        <div style="display:flex; align-items:flex-end; gap:3px; height:${barH}px;">
+                            <div style="background:var(--primary); width:14px; height:${(t.rev/maxT)*barH}px; border-radius:4px 4px 0 0; min-height:2px;" title="Revenue: ${formatCurrency(t.rev)}"></div>
+                            <div style="background:#8B5CF6; width:14px; height:${(t.exp/maxT)*barH}px; border-radius:4px 4px 0 0; min-height:2px;" title="Expenses: ${formatCurrency(t.exp)}"></div>
+                            <div style="background:var(--accent); width:14px; height:${((t.pro > 0 ? t.pro : 0)/maxT)*barH}px; border-radius:4px 4px 0 0; min-height:2px;" title="Profit: ${formatCurrency(t.pro)}"></div>
+                        </div>
+                        <span style="font-size:10px; color:var(--text-muted); font-weight:600;">${t.label}</span>
+                    </div>
+                `).join('');
+            }
         }
 
         function renderOrdersTable(data) {
@@ -928,32 +1036,48 @@
         }
 
         function renderDebtors() {
-            const debtors = orders.filter(o => (o.totalSell - o.amtPaid) > 0.01);
+            // Group orders by customer, only show customers with outstanding balance
+            const today = new Date().toISOString().split('T')[0];
+            const customerMap = {};
+            orders.forEach(o => {
+                const bal = o.totalSell - o.amtPaid;
+                if (bal > 0.01) {
+                    if (!customerMap[o.customer]) {
+                        customerMap[o.customer] = { totalBilled: 0, totalPaid: 0, invoiceCount: 0, hasOverdue: false, earliestDue: null };
+                    }
+                    customerMap[o.customer].totalBilled += o.totalSell;
+                    customerMap[o.customer].totalPaid += o.amtPaid;
+                    customerMap[o.customer].invoiceCount++;
+                    if (o.dueDate && o.dueDate < today) customerMap[o.customer].hasOverdue = true;
+                    if (o.dueDate && (!customerMap[o.customer].earliestDue || o.dueDate < customerMap[o.customer].earliestDue)) {
+                        customerMap[o.customer].earliestDue = o.dueDate;
+                    }
+                }
+            });
+
             const tbody = document.getElementById('debtors-body');
             const preview = document.getElementById('debtor-preview-list');
-            const today = new Date().toISOString().split('T')[0];
+            const customers = Object.entries(customerMap);
 
-            if (!debtors.length) {
+            if (!customers.length) {
                 tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 48px; color: var(--text-muted);">🎉 No active debtors! All balances cleared.</td></tr>`;
             } else {
-                tbody.innerHTML = debtors.map(o => {
-                    const isOverdue = o.dueDate && o.dueDate < today;
+                tbody.innerHTML = customers.map(([name, c]) => {
+                    const outstanding = c.totalBilled - c.totalPaid;
+                    const safeKey = name.replace(/\s+/g, '-');
                     return `
                         <tr>
                             <td>
-                                <div style="font-weight: 600;">${o.customer}</div>
-                                ${isOverdue ? '<span style="font-size: 10px; color: var(--danger); font-weight: 800;">● OVERDUE</span>' : ''}
+                                <div style="font-weight: 700; font-size: 15px;">${name}</div>
+                                ${c.hasOverdue ? '<span style="font-size: 10px; color: var(--danger); font-weight: 800;">● OVERDUE</span>' : ''}
                             </td>
-                            <td>${formatCurrency(o.totalSell)}</td>
-                            <td>${formatCurrency(o.amtPaid)}</td>
-                            <td style="color: var(--danger); font-weight: 700;">${formatCurrency(o.totalSell - o.amtPaid)}</td>
-                            <td style="color: ${isOverdue ? 'var(--danger)' : 'inherit'}; font-weight: ${isOverdue ? '700' : 'normal'}">
-                                ${o.dueDate || 'N/A'}
-                            </td>
+                            <td style="font-size:13px;">${c.invoiceCount} invoice${c.invoiceCount !== 1 ? 's' : ''}</td>
+                            <td>${formatCurrency(c.totalBilled)}</td>
+                            <td style="color: var(--success); font-weight: 600;">${formatCurrency(c.totalPaid)}</td>
+                            <td style="color: var(--danger); font-weight: 700;">${formatCurrency(outstanding)}</td>
                             <td>
-                                <div style="display: flex; gap: 8px; align-items: center;">
-                                    <button class="btn btn-outline" style="padding: 4px 12px; font-size: 11px;" onclick="markAsPaid(${o.id})">Quick Pay</button>
-                                    <button class="btn-copy-link" onclick="copyShareLink(${o.id})" data-copy-id="${o.id}" title="Copy shareable payment link">🔗 Copy Link</button>
+                                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                                    <button class="btn-copy-link" onclick="copyDashboardLink(${JSON.stringify(name)})" data-cust-key="${safeKey}" title="Copy full account dashboard link">📊 Share Dashboard</button>
                                 </div>
                             </td>
                         </tr>
@@ -961,13 +1085,14 @@
                 }).join('');
             }
 
-            preview.innerHTML = debtors.slice(0, 4).map(o => `
+            // Preview for dashboard
+            preview.innerHTML = customers.slice(0, 4).map(([name, c]) => `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
                     <div>
-                        <div style="font-weight: 600; font-size: 14px;">${o.customer}</div>
-                        <div style="font-size: 12px; color: var(--text-muted);">Due: ${o.dueDate || 'No Date'}</div>
+                        <div style="font-weight: 600; font-size: 14px;">${name}</div>
+                        <div style="font-size: 12px; color: var(--text-muted);">${c.invoiceCount} invoice${c.invoiceCount !== 1 ? 's' : ''} outstanding</div>
                     </div>
-                    <div style="color: var(--danger); font-weight: 700;">${formatCurrency(o.totalSell - o.amtPaid)}</div>
+                    <div style="color: var(--danger); font-weight: 700;">${formatCurrency(c.totalBilled - c.totalPaid)}</div>
                 </div>
             `).join('') || '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No active debtors.</p>';
         }
@@ -996,8 +1121,8 @@
                                 <div style="font-size: 18px; font-weight: 700; color: ${isPaid ? 'var(--success)' : 'var(--danger)'}">${formatCurrency(bal > 0 ? bal : 0)}</div>
                             </div>
                             <div style="display: flex; gap: 8px; flex-direction: column; align-items: flex-end;">
-                                <button class="btn-icon" onclick="openInvoice(${o.id})" style="font-size: 12px; padding: 6px 10px;">📄 View Admin Invoice</button>
-                                <button class="btn-copy-link" onclick="copyShareLink(${o.id})" data-copy-id="${o.id}">🔗 Copy Link</button>
+                                <button class="btn-icon" onclick="openInvoice(${o.id})" style="font-size: 12px; padding: 6px 10px;">📄 View Invoice</button>
+                                <button class="btn-copy-link" onclick="copyShareLink(${o.id})" data-copy-id="${o.id}">📊 Share Dashboard</button>
                             </div>
                         </div>
                     </div>
@@ -1157,16 +1282,25 @@
         }
 
         function exportToCSV() {
-            if (!orders.length) return alert('No data to export.');
-            const headers = ['Order ID','Customer','Book Title','Pages','Qty','Unit Cost','Unit Sell','Total Cost','Total Sell','Profit','Amt Paid','Date','Method'];
-            const rows = orders.map(o => [o.id,o.customer,o.title,o.pages,o.qty,o.costPage,o.sellPrice,o.totalCost,o.totalSell,o.profit,o.amtPaid,o.date,o.method]);
-            const csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
-            const link = document.createElement("a");
-            link.setAttribute("href", encodeURI(csvContent));
-            link.setAttribute("download", `PrintPro_Export_${new Date().toISOString().split('T')[0]}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            if (!orders.length && !expenses.length) return alert('No data to export.');
+            let csv = '';
+            // Orders sheet
+            if (orders.length) {
+                const headers = ['Order ID','Customer','Book Title','Pages','Qty','Unit Cost','Unit Sell','Total Cost','Total Sell','Profit','Amt Paid','Date','Method'];
+                const rows = orders.map(o => [o.id,o.customer,o.title,o.pages,o.qty,o.costPage,o.sellPrice,o.totalCost,o.totalSell,o.profit,o.amtPaid,o.date,o.method]);
+                csv += 'ORDERS\n' + headers.join(',') + '\n' + rows.map(e => e.join(',')).join('\n') + '\n\n';
+            }
+            // Expenses sheet
+            if (expenses.length) {
+                const eHeaders = ['Expense ID','Category','Name','Qty/Units','Amount','Date','Vendor/Notes'];
+                const eRows = expenses.map(e => [e.id, e.category, `"${e.description}"`, `"${e.qty||''}"`, e.amount, e.date, `"${e.vendor||''}"` ]);
+                csv += 'EXPENSES\n' + eHeaders.join(',') + '\n' + eRows.map(r => r.join(',')).join('\n');
+            }
+            const encoded = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+            const link = document.createElement('a');
+            link.setAttribute('href', encoded);
+            link.setAttribute('download', `PrintPro_Export_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
         }
 
         function downloadInvoicePDF() {
@@ -1188,12 +1322,179 @@
         }
 
         function clearAllData() {
-            if (confirm('CAUTION: This will wipe ALL business data and cannot be undone.')) {
+            if (confirm('CAUTION: This will wipe ALL business data (orders, invoices, expenses) and cannot be undone.')) {
                 if (confirm('Last check — delete everything?')) {
                     localStorage.clear();
                     location.reload();
                 }
             }
+        }
+
+        // =============================================
+        // EXPENSES MODULE
+        // =============================================
+
+        function saveExpenses() {
+            localStorage.setItem('bp_expenses', JSON.stringify(expenses));
+        }
+
+        function openExpenseModal() {
+            currentExpenseEditId = null;
+            document.getElementById('expense-modal-title').innerText = 'Add Expense';
+            document.getElementById('expense-form').reset();
+            document.getElementById('expDate').valueAsDate = new Date();
+            document.getElementById('expense-save-btn').innerText = 'Save Expense';
+            document.getElementById('expense-modal').style.display = 'flex';
+        }
+
+        function editExpense(id) {
+            const e = expenses.find(x => x.id === id);
+            if (!e) return;
+            currentExpenseEditId = id;
+            document.getElementById('expense-modal-title').innerText = 'Edit Expense';
+            document.getElementById('expCategory').value = e.category;
+            document.getElementById('expAmount').value = e.amount;
+            document.getElementById('expDescription').value = e.description;
+            document.getElementById('expDate').value = e.date;
+            document.getElementById('expQty').value = e.qty || '';
+            document.getElementById('expVendor').value = e.vendor || '';
+            document.getElementById('expense-save-btn').innerText = 'Update Expense';
+            document.getElementById('expense-modal').style.display = 'flex';
+        }
+
+        function deleteExpense(id) {
+            if (confirm('Delete this expense entry?')) {
+                expenses = expenses.filter(e => e.id !== id);
+                saveExpenses();
+                renderAll();
+            }
+        }
+
+        function handleSaveExpense(e) {
+            e.preventDefault();
+            const entry = {
+                id: currentExpenseEditId || Date.now(),
+                category: document.getElementById('expCategory').value,
+                amount: parseFloat(document.getElementById('expAmount').value) || 0,
+                description: document.getElementById('expDescription').value,
+                date: document.getElementById('expDate').value,
+                qty: document.getElementById('expQty').value || '',
+                vendor: document.getElementById('expVendor').value
+            };
+            if (currentExpenseEditId) {
+                const idx = expenses.findIndex(x => x.id === currentExpenseEditId);
+                expenses[idx] = entry;
+            } else {
+                expenses.push(entry);
+            }
+            saveExpenses();
+            renderAll();
+            closeModal('expense-modal');
+            currentExpenseEditId = null;
+        }
+
+        function renderExpenses() {
+            const catFilter = document.getElementById('filter-expense-cat')?.value || 'all';
+            const fromDate = document.getElementById('filter-exp-from')?.value || '';
+            const toDate   = document.getElementById('filter-exp-to')?.value || '';
+            let filtered = expenses.slice();
+            if (catFilter !== 'all') filtered = filtered.filter(e => e.category === catFilter);
+            if (fromDate) filtered = filtered.filter(e => e.date >= fromDate);
+            if (toDate)   filtered = filtered.filter(e => e.date <= toDate);
+
+            filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const tbody = document.getElementById('expenses-body');
+            const catIcons = { Consumables: '🖨️', Equipment: '🔧', Utilities: '⚡', Miscellaneous: '📦' };
+            const catColors = { Consumables: '#3B82F6', Equipment: '#EF4444', Utilities: '#F59E0B', Miscellaneous: '#6B7280' };
+
+            if (!filtered.length) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 48px; color: var(--text-muted);">No expenses found. Adjust filters or click "+ Add Expense".</td></tr>`;
+            } else {
+                tbody.innerHTML = filtered.map(e => `
+                    <tr>
+                        <td>
+                            <span style="font-size: 16px; margin-right: 6px;">${catIcons[e.category] || '📦'}</span>
+                            <span style="font-weight: 600;">${e.category}</span>
+                        </td>
+                        <td>
+                            <div style="font-weight: 500;">${e.description}</div>
+                            ${e.vendor ? '<div style="font-size: 11px; color: var(--text-muted);">' + e.vendor + '</div>' : ''}
+                        </td>
+                        <td style="color: var(--text-muted); font-size:13px;">${e.qty || '—'}</td>
+                        <td style="font-weight: 700; color: var(--danger);">${formatCurrency(e.amount)}</td>
+                        <td>${new Date(e.date + 'T00:00:00').toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' })}</td>
+                        <td>
+                            <div style="display: flex; gap: 8px;">
+                                <button class="btn-icon" onclick="editExpense(${e.id})" title="Edit">✎</button>
+                                <button class="btn-icon" style="color:var(--danger)" onclick="deleteExpense(${e.id})" title="Delete">✕</button>
+                            </div>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+
+            // Stats
+            const categories = ['Consumables', 'Equipment', 'Utilities', 'Miscellaneous'];
+            const totalExp = expenses.reduce((s, e) => s + e.amount, 0);
+            const thisMonth = new Date().toISOString().slice(0, 7);
+            const thisYear  = new Date().getFullYear().toString();
+            const monthExp  = expenses.filter(e => e.date?.startsWith(thisMonth)).reduce((s, e) => s + e.amount, 0);
+            const yearExp   = expenses.filter(e => e.date?.startsWith(thisYear)).reduce((s, e) => s + e.amount, 0);
+
+            // Average monthly over past 6 months
+            const months6 = [];
+            for (let i = 5; i >= 0; i--) { const d = new Date(); d.setMonth(d.getMonth()-i); months6.push(d.toISOString().slice(0,7)); }
+            const monthlyTotals = months6.map(m => expenses.filter(e => e.date?.startsWith(m)).reduce((s,e) => s+e.amount, 0));
+            const avgMonthly = monthlyTotals.reduce((s,v) => s+v, 0) / (months6.length || 1);
+
+            const catTotals = {};
+            categories.forEach(cat => {
+                catTotals[cat] = expenses.filter(e => e.category === cat).reduce((s, e) => s + e.amount, 0);
+            });
+            const topCat = Object.entries(catTotals).sort((a,b) => b[1]-a[1])[0] || ['None', 0];
+
+            document.getElementById('expense-stats-grid').innerHTML = `
+                <div class="stat-card" style="border-left: 4px solid #8B5CF6;">
+                    <div class="stat-label">All-Time Total</div>
+                    <div class="stat-value" style="color: #8B5CF6;">${formatCurrency(totalExp)}</div>
+                    <div class="stat-trend">${expenses.length} entries</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">This Month</div>
+                    <div class="stat-value">${formatCurrency(monthExp)}</div>
+                    <div class="stat-trend">${new Date().toLocaleDateString('en-IN', { month: 'long', year: 'numeric' })}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">This Year</div>
+                    <div class="stat-value">${formatCurrency(yearExp)}</div>
+                    <div class="stat-trend">${thisYear}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Avg Monthly (6 mo)</div>
+                    <div class="stat-value">${formatCurrency(avgMonthly)}</div>
+                    <div class="stat-trend">Top: ${topCat[0]} (${formatCurrency(topCat[1])})</div>
+                </div>
+            `;
+
+            const maxCatVal = Math.max(...Object.values(catTotals), 1);
+            document.getElementById('expense-category-bars').innerHTML = categories.map(cat => {
+                const val = catTotals[cat];
+                const pct = totalExp > 0 ? ((val / totalExp) * 100).toFixed(1) : 0;
+                const barW = (val / maxCatVal) * 100;
+                return `
+                    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 16px;">
+                        <div style="width: 140px; flex-shrink: 0; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                            <span>${catIcons[cat]}</span> ${cat}
+                        </div>
+                        <div style="flex: 1; background: #F1F5F9; border-radius: 8px; height: 28px; overflow: hidden;">
+                            <div style="background: ${catColors[cat]}; width: ${barW}%; height: 100%; border-radius: 8px; transition: width 0.6s ease;"></div>
+                        </div>
+                        <div style="width: 100px; text-align: right; font-size: 13px; font-weight: 700; flex-shrink: 0;">${formatCurrency(val)}</div>
+                        <div style="width: 48px; text-align: right; font-size: 11px; color: var(--text-muted); flex-shrink: 0;">${pct}%</div>
+                    </div>
+                `;
+            }).join('');
         }
     </script>
 </body>
