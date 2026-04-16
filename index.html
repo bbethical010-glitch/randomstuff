@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Print Pro - Business Admin</title>
+    <title>BookPrint Pro - Business Admin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -28,7 +28,6 @@
             --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- Global Reset & Scrollbars --- */
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -42,7 +41,6 @@
         .logo-container { padding: 0 32px 48px 32px; display: flex; align-items: center; gap: 14px; }
         .logo-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent), #B8860B); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: var(--primary); font-weight: 800; font-size: 22px; box-shadow: 0 4px 12px var(--accent-glow); }
         .logo-text { font-size: 20px; font-weight: 700; letter-spacing: -0.5px; }
-
         .nav-menu { list-style: none; flex: 1; padding: 0 16px; }
         .nav-item { margin-bottom: 8px; }
         .nav-link { display: flex; align-items: center; gap: 14px; padding: 14px 20px; color: var(--text-muted); text-decoration: none; border-radius: 12px; transition: var(--transition); font-weight: 500; font-size: 15px; }
@@ -50,22 +48,19 @@
         .nav-link:hover { background-color: var(--primary-light); color: var(--text-main); }
         .nav-link.active { background-color: var(--accent); color: var(--primary); font-weight: 600; }
         .nav-link.active svg { stroke: var(--primary); }
-
-        .sidebar-footer { padding: 32px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+        .sidebar-footer { padding: 32px; border-top: 1px solid rgba(255,255,255,0.05); }
 
         /* --- Main Content --- */
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         header { height: 80px; background: #FFFFFF; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; flex-shrink: 0; }
         .breadcrumb { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 14px; }
         .header-actions { display: flex; align-items: center; gap: 24px; }
-
         .content-area { flex: 1; padding: 40px; overflow-y: auto; }
 
         /* --- Cards & Stats --- */
         .page-section { display: none; }
         .page-section.active { display: block; animation: slideUp 0.3s ease-out; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px; }
         .stat-card { background: var(--bg-card); padding: 28px; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); transition: var(--transition); }
         .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
@@ -101,11 +96,14 @@
         .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow: 0 4px 12px var(--accent-glow); }
         .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text-dark); }
         .btn-outline:hover { background: #F8FAFC; border-color: var(--text-muted); }
-        .btn-icon { padding: 8px; border-radius: 10px; color: var(--text-muted); }
+        .btn-icon { padding: 8px; border-radius: 10px; color: var(--text-muted); background: transparent; border: none; cursor: pointer; }
         .btn-icon:hover { background: #F1F5F9; color: var(--primary); }
+        .btn-copy-link { padding: 6px 14px; border-radius: 8px; border: 1.5px solid var(--accent); color: var(--accent-hover); background: transparent; font-size: 12px; font-weight: 600; cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 6px; }
+        .btn-copy-link:hover { background: var(--accent); color: var(--primary); }
+        .btn-copy-link.copied { background: var(--success); border-color: var(--success); color: white; }
 
         /* --- Forms & Modals --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15,23,42,0.6); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
         .modal { background: white; width: 100%; max-width: 700px; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); animation: zoomIn 0.2s ease-out; }
         @keyframes zoomIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-header { padding: 28px 40px; background: var(--primary); color: white; display: flex; justify-content: space-between; align-items: center; }
@@ -118,8 +116,7 @@
         input:focus, select:focus, textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
         .math-result { padding: 16px; background: #F8FAFC; border-radius: 12px; border: 1px dashed var(--accent); margin-top: 8px; font-size: 14px; font-weight: 600; color: var(--primary); display: flex; justify-content: space-between; }
 
-        /* --- Invoice View --- */
-        #invoice-preview { max-width: 850px; }
+        /* --- Invoice View (Admin modal) --- */
         .invoice-paper { padding: 60px; background: white; border-radius: 4px; color: #000; line-height: 1.6; }
         .invoice-header { display: flex; justify-content: space-between; border-bottom: 2px solid #EEE; padding-bottom: 40px; margin-bottom: 40px; }
         .invoice-meta { display: flex; justify-content: space-between; margin-bottom: 60px; }
@@ -130,46 +127,158 @@
         .invoice-total-row { display: flex; justify-content: space-between; padding: 10px 0; }
         .invoice-total-row.grand { font-size: 20px; font-weight: 700; border-top: 2px solid #000; padding-top: 15px; margin-top: 10px; }
 
-        @media print {
-            body * { visibility: hidden; }
-            #invoice-print-area, #invoice-print-area * { visibility: visible; }
-            #invoice-print-area { position: absolute; left: 0; top: 0; width: 100%; box-shadow: none !important; }
-            .no-print { display: none !important; }
-        }
-
-        /* --- Mobile Responsive --- */
         @media (max-width: 1024px) {
             .sidebar { position: fixed; left: -280px; }
             .sidebar.active { left: 0; }
             .main-wrapper { width: 100%; }
         }
 
-        /* --- Debtor Mode Specifics --- */
-        body.debtor-mode .sidebar,
-        body.debtor-mode header,
-        body.debtor-mode .stats-grid,
-        body.debtor-mode .table-container,
-        body.debtor-mode #orders,
-        body.debtor-mode #invoices,
-        body.debtor-mode #reports,
-        body.debtor-mode #dashboard { display: none !important; }
-
-        .debtor-container { 
-            display: none; 
-            width: 100%; 
-            max-width: 600px; 
-            margin: 60px auto; 
-            padding: 40px; 
-            background: white; 
-            border-radius: 32px; 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08); 
+        /* ============================================================
+           PUBLIC DEBTOR VIEW - Completely isolated, clean design
+           ============================================================ */
+        #public-invoice-view {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0A192F 0%, #172A45 50%, #0d2137 100%);
+            overflow-y: auto;
+            z-index: 99999;
+            padding: 40px 20px 60px;
         }
-        body.debtor-mode { background: #F8FAFC; overflow-y: auto; display: block; }
-        body.debtor-mode .debtor-container { display: block; animation: slideUp 0.5s ease-out; }
+        #public-invoice-view.active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .pub-card {
+            max-width: 560px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 32px 80px rgba(0,0,0,0.4);
+            animation: riseUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes riseUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+        .pub-header {
+            background: linear-gradient(135deg, #0A192F, #172A45);
+            padding: 36px 40px;
+            color: white;
+            text-align: center;
+        }
+        .pub-logo {
+            width: 52px; height: 52px;
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; font-weight: 800; color: #0A192F;
+            margin: 0 auto 16px;
+            box-shadow: 0 6px 20px rgba(212,175,55,0.3);
+        }
+        .pub-business-name { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+        .pub-invoice-num { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 4px; letter-spacing: 0.05em; }
+
+        .pub-body { padding: 36px 40px; }
+
+        .pub-status-banner {
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 28px;
+        }
+        .pub-status-banner.paid-banner { background: linear-gradient(135deg, #DCFCE7, #BBF7D0); border: 1px solid #86EFAC; }
+        .pub-status-banner.unpaid-banner { background: linear-gradient(135deg, #FEF2F2, #FEE2E2); border: 1px solid #FCA5A5; }
+        .pub-status-banner.partial-banner { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border: 1px solid #FCD34D; }
+
+        .pub-status-icon { font-size: 36px; margin-bottom: 8px; }
+        .pub-status-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+        .pub-status-label.paid-text { color: #166534; }
+        .pub-status-label.unpaid-text { color: #991B1B; }
+        .pub-status-label.partial-text { color: #92400E; }
+
+        .pub-balance-amount { font-size: 40px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+        .pub-balance-amount.paid-amount { color: #166534; }
+        .pub-balance-amount.unpaid-amount { color: #DC2626; }
+        .pub-balance-amount.partial-amount { color: #D97706; }
+        .pub-balance-note { font-size: 13px; color: #64748B; }
+
+        .pub-section-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #94A3B8; margin-bottom: 12px; }
+
+        .pub-detail-row {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 13px 0;
+            border-bottom: 1px solid #F1F5F9;
+        }
+        .pub-detail-row:last-child { border-bottom: none; }
+        .pub-detail-label { font-size: 14px; color: #64748B; }
+        .pub-detail-value { font-size: 14px; font-weight: 600; color: #1E293B; text-align: right; max-width: 60%; }
+
+        .pub-breakdown-box {
+            background: #F8FAFC;
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+        .pub-breakdown-row {
+            display: flex; justify-content: space-between;
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .pub-breakdown-row.total-row {
+            border-top: 1px solid #E2E8F0;
+            margin-top: 8px;
+            padding-top: 14px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+        .pub-breakdown-row.paid-row { color: #10B981; }
+        .pub-breakdown-row.balance-row { color: #EF4444; font-weight: 700; }
+
+        .pub-overdue-alert {
+            background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
+            border: 1px solid #FCA5A5;
+            border-radius: 12px;
+            padding: 14px 18px;
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            color: #991B1B;
+            font-weight: 500;
+        }
+        .pub-success-banner {
+            background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+            border: 1px solid #86EFAC;
+            border-radius: 12px;
+            padding: 20px 24px;
+            text-align: center;
+            margin-bottom: 0;
+        }
+        .pub-success-banner h3 { font-size: 17px; font-weight: 700; color: #166534; margin-bottom: 4px; }
+        .pub-success-banner p { font-size: 13px; color: #166534; opacity: 0.8; }
+
+        .pub-footer {
+            background: #F8FAFC;
+            border-top: 1px solid #E2E8F0;
+            padding: 20px 40px;
+            text-align: center;
+        }
+        .pub-footer p { font-size: 12px; color: #94A3B8; }
+        .pub-footer strong { color: #64748B; }
+
+        .pub-error-card {
+            max-width: 420px;
+            margin: 80px auto;
+            background: white;
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .pub-error-card h2 { font-size: 20px; color: #1E293B; margin-bottom: 12px; font-weight: 700; }
+        .pub-error-card p { font-size: 14px; color: #64748B; }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
+    <!-- ===================== ADMIN APP ===================== -->
     <nav class="sidebar" id="sidebar">
         <div class="logo-container">
             <div class="logo-icon">B</div>
@@ -184,7 +293,7 @@
             </li>
             <li class="nav-item">
                 <a href="#" class="nav-link" onclick="showSection('orders', event)">
-                    <svg><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    <svg><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
                     <span>Orders</span>
                 </a>
             </li>
@@ -215,7 +324,6 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="main-wrapper">
         <header>
             <div class="breadcrumb">
@@ -224,53 +332,35 @@
             <div class="header-actions">
                 <div class="search-box">
                     <svg><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" placeholder="Global search orders..." onkeyup="globalSearch(this.value)">
+                    <input type="text" placeholder="Search orders..." onkeyup="globalSearch(this.value)">
                 </div>
-                <div class="user-profile">
-                    <span style="font-size: 14px; font-weight: 600; color: var(--primary);">Pratham Pandey</span>
-                    <div style="width: 40px; height: 40px; background: var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <img src="https://ui-avatars.com/api/?name=Pratham+Pandey&background=0A192F&color=fff" alt="Profile">
-                    </div>
-                </div>
+                <div style="font-size: 14px; font-weight: 600; color: var(--primary);">BookPrint Pro</div>
             </div>
         </header>
 
         <main class="content-area">
-            <!-- Dashboard Section -->
+            <!-- Dashboard -->
             <section id="dashboard" class="page-section active">
-                <div class="stats-grid" id="stats-grid">
-                    <!-- Dynamic Stat Cards -->
-                </div>
-
+                <div class="stats-grid" id="stats-grid"></div>
                 <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px;">
-                    <div class="card">
+                    <div class="stat-card">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 32px;">
                             <h3 style="font-size: 18px; font-weight: 700;">Financial Breakdown</h3>
-                            <select class="btn-outline" style="padding: 4px 12px; font-size: 12px; border-radius: 8px;">
-                                <option>Current Month</option>
-                                <option>Last 3 Months</option>
-                            </select>
                         </div>
-                        <div id="chart-area" style="height: 250px; display: flex; align-items: flex-end; justify-content: space-around; padding-bottom: 20px; border-bottom: 1px solid var(--border); position: relative;">
-                            <!-- SVG Chart Bars -->
-                        </div>
+                        <div id="chart-area" style="height: 250px; display: flex; align-items: flex-end; justify-content: space-around; padding-bottom: 20px; border-bottom: 1px solid var(--border);"></div>
                         <div style="display: flex; justify-content: space-around; margin-top: 15px; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase;">
-                            <span>Revenue</span>
-                            <span>Costs</span>
-                            <span>Profit</span>
+                            <span>Revenue</span><span>Costs</span><span>Profit</span>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="stat-card">
                         <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 24px;">Recent Debtors</h3>
-                        <div id="debtor-preview-list">
-                            <!-- Debtor items -->
-                        </div>
-                        <button class="btn btn-outline" style="width: 100%; margin-top: 16px;" onclick="showSection('debtors')">View All Debtors</button>
+                        <div id="debtor-preview-list"></div>
+                        <button class="btn btn-outline" style="width: 100%; margin-top: 16px;" onclick="showSection('debtors', event)">View All Debtors</button>
                     </div>
                 </div>
             </section>
 
-            <!-- Orders Section -->
+            <!-- Orders -->
             <section id="orders" class="page-section">
                 <div class="table-container">
                     <div class="table-header">
@@ -303,30 +393,26 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="orders-body">
-                                <!-- Order rows -->
-                            </tbody>
+                            <tbody id="orders-body"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
-            <!-- Invoices Section -->
+            <!-- Invoices -->
             <section id="invoices" class="page-section">
-                <div class="card">
-                    <h3 style="margin-bottom: 24px;">Credit Sales & Invoices</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 32px;">Manage all pending credit invoices and set partial payments.</p>
-                    <div id="invoices-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-                        <!-- Invoice cards -->
-                    </div>
+                <div class="stat-card">
+                    <h3 style="margin-bottom: 8px;">Credit Sales & Invoices</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 14px;">Share payment links with debtors. Click 🔗 to copy a secure link for any invoice.</p>
+                    <div id="invoices-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;"></div>
                 </div>
             </section>
 
-            <!-- Debtors Section -->
+            <!-- Debtors -->
             <section id="debtors" class="page-section">
-                <div class="card" style="border-left: 5px solid var(--danger);">
-                    <h3 style="color: var(--danger); margin-bottom: 12px;">Active Debtors</h3>
-                    <p style="color: var(--text-muted);">Users with outstanding balances higher than zero.</p>
+                <div class="stat-card" style="border-left: 5px solid var(--danger); margin-bottom: 24px;">
+                    <h3 style="color: var(--danger); margin-bottom: 6px;">Active Debtors</h3>
+                    <p style="color: var(--text-muted); font-size: 14px;">Click 🔗 to copy a shareable payment link you can send to any debtor.</p>
                 </div>
                 <div class="table-container">
                     <table>
@@ -334,24 +420,22 @@
                             <tr>
                                 <th>Customer Name</th>
                                 <th>Total Bill</th>
-                                <th>Amt Paid</th>
+                                <th>Amount Paid</th>
                                 <th>Remaining</th>
                                 <th>Due Date</th>
-                                <th>Action</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="debtors-body">
-                            <!-- Debtor rows -->
-                        </tbody>
+                        <tbody id="debtors-body"></tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Reports Section -->
+            <!-- Reports -->
             <section id="reports" class="page-section">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-label">Projected Annual Revenue</div>
+                        <div class="stat-label">Total Revenue</div>
                         <div class="stat-value" id="rep-annual-rev">₹0.00</div>
                     </div>
                     <div class="stat-card">
@@ -363,33 +447,15 @@
                         <div class="stat-value" id="rep-collection">0%</div>
                     </div>
                 </div>
-                <div class="card" style="margin-top: 32px; border: 1px solid var(--danger); background: #FFF5F5;">
+                <div class="stat-card" style="margin-top: 32px; border: 1px solid var(--danger); background: #FFF5F5;">
                     <h3 style="color: var(--danger); margin-bottom: 12px;">Danger Zone</h3>
                     <p style="color: var(--text-dark); font-size: 14px; margin-bottom: 20px;">Wipe all business data, orders, and invoices. This action cannot be undone.</p>
                     <button class="btn btn-outline" style="border-color: var(--danger); color: var(--danger);" onclick="clearAllData()">Clear All Business Data</button>
                 </div>
             </section>
         </main>
-
-        <!-- Debtor View Container -->
-        <div class="debtor-container" id="debtor-view">
-            <div style="text-align: center; margin-bottom: 40px;">
-                <div class="logo-icon" style="margin: 0 auto 16px;">B</div>
-                <h2 style="font-size: 24px; font-weight: 800; color: var(--primary);">Payment Status</h2>
-                <div style="color: var(--text-muted); font-size: 14px;">BookPrint Pro Services</div>
-            </div>
-            
-            <div id="debtor-content">
-                <!-- Dynamic Debtor Data -->
-            </div>
-
-            <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center;">
-                <p style="font-size: 13px; color: var(--text-muted);">Thank you for choosing 우리 BookPrint Pro. For any queries, please contact us at contact@bookprintpro.com</p>
-            </div>
-        </div>
     </div>
 
-    <!-- Modals -->
     <!-- Order Entry Modal -->
     <div class="modal-overlay" id="order-modal">
         <div class="modal">
@@ -421,7 +487,7 @@
                             <input type="number" id="costPage" step="0.01" required value="0.00">
                         </div>
                         <div class="form-group">
-                            <label>Selling Price (per copy)</label>
+                            <label>Selling Price per Copy (₹)</label>
                             <input type="number" id="sellPrice" step="0.01" required value="0.00">
                         </div>
                         <div class="form-group">
@@ -448,13 +514,11 @@
                             <textarea id="notes" rows="2"></textarea>
                         </div>
                     </div>
-                    
                     <div class="math-result">
                         <div>Total Production Cost: <span id="pre-cost">₹0.00</span></div>
                         <div>Total Selling Vol: <span id="pre-sell">₹0.00</span></div>
                         <div style="color: var(--success)">Est. Profit: <span id="pre-profit">₹0.00</span></div>
                     </div>
-
                     <div style="margin-top: 32px; display: flex; justify-content: flex-end; gap: 16px;">
                         <button type="button" class="btn btn-outline" onclick="closeModal('order-modal')">Cancel</button>
                         <button type="submit" class="btn btn-primary" id="save-btn">Create Order</button>
@@ -464,7 +528,7 @@
         </div>
     </div>
 
-    <!-- Invoice Preview Modal -->
+    <!-- Admin Invoice Preview Modal -->
     <div class="modal-overlay" id="invoice-modal">
         <div class="modal" id="invoice-preview-container">
             <div class="modal-header no-print">
@@ -474,74 +538,258 @@
                     <span onclick="closeModal('invoice-modal')" style="cursor:pointer; font-size: 24px;">&times;</span>
                 </div>
             </div>
-            <div class="modal-body" id="invoice-print-area">
-                <!-- Invoice Content -->
-            </div>
+            <div class="modal-body" id="invoice-print-area"></div>
         </div>
     </div>
 
-    <!-- Logic Script -->
+    <!-- ===================== PUBLIC DEBTOR VIEW ===================== -->
+    <div id="public-invoice-view">
+        <!-- Content rendered by JS -->
+    </div>
+
     <script>
-        // State Initialization
+        // =============================================
+        // STATE
+        // =============================================
         let orders = JSON.parse(localStorage.getItem('bp_orders')) || [];
         let currentEditId = null;
 
-        // Initialization
+        // =============================================
+        // INIT
+        // =============================================
         document.addEventListener('DOMContentLoaded', () => {
-            checkUserMode();
+            // Check if this is a public invoice link FIRST
+            if (checkPublicLink()) return; // stop here — don't init admin app
+
+            // Otherwise boot the admin app
             renderAll();
             document.getElementById('orderDate').valueAsDate = new Date();
             document.getElementById('order-form').onsubmit = handleSaveOrder;
         });
 
-        function checkUserMode() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('view') === 'status' && params.get('d')) {
-                try {
-                    const data = JSON.parse(atob(params.get('d')));
-                    document.body.classList.add('debtor-mode');
-                    renderDebtorStatus(data);
-                } catch (e) {
-                    console.error('Invalid status link');
-                }
-            }
+        // =============================================
+        // PUBLIC DEBTOR LINK SYSTEM
+        // Uses URL hash:  #invoice?id=ORDER_ID&t=TOKEN
+        // Token is stored in localStorage alongside each order
+        // =============================================
+
+        function generateToken() {
+            return Math.random().toString(36).substring(2, 12) + Date.now().toString(36);
         }
 
-        function renderDebtorStatus(data) {
-            const container = document.getElementById('debtor-content');
-            const bal = data.totalSell - data.amtPaid;
-            container.innerHTML = `
-                <div style="background: #F8FAFC; padding: 24px; border-radius: 20px; text-align: center; margin-bottom: 24px;">
-                    <div style="font-size: 14px; color: var(--text-muted); margin-bottom: 8px;">Current Balance Due</div>
-                    <div style="font-size: 36px; font-weight: 800; color: ${bal > 0 ? 'var(--danger)' : 'var(--success)'};">
-                        ${formatCurrency(bal)}
+        function getOrCreateToken(orderId) {
+            const storeKey = `bp_token_${orderId}`;
+            let token = localStorage.getItem(storeKey);
+            if (!token) {
+                token = generateToken();
+                localStorage.setItem(storeKey, token);
+            }
+            return token;
+        }
+
+        function buildPublicLink(orderId) {
+            const token = getOrCreateToken(orderId);
+            const base = `${window.location.origin}${window.location.pathname}`;
+            return `${base}#invoice?id=${orderId}&t=${token}`;
+        }
+
+        function copyShareLink(orderId) {
+            const link = buildPublicLink(orderId);
+            navigator.clipboard.writeText(link).then(() => {
+                showCopyFeedback(orderId);
+            }).catch(() => {
+                prompt('Copy this link to share with your customer:', link);
+            });
+        }
+
+        function showCopyFeedback(orderId) {
+            // Update all copy buttons for this order
+            document.querySelectorAll(`[data-copy-id="${orderId}"]`).forEach(btn => {
+                btn.textContent = '✅ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.innerHTML = '🔗 Copy Link';
+                    btn.classList.remove('copied');
+                }, 2500);
+            });
+        }
+
+        function checkPublicLink() {
+            const hash = window.location.hash;
+            if (!hash.startsWith('#invoice?')) return false;
+
+            const params = new URLSearchParams(hash.slice('#invoice?'.length));
+            const id = parseInt(params.get('id'));
+            const token = params.get('t');
+
+            showPublicView(id, token);
+            return true;
+        }
+
+        function showPublicView(orderId, token) {
+            const view = document.getElementById('public-invoice-view');
+            view.classList.add('active');
+
+            // Hide admin DOM to be safe
+            document.querySelector('.sidebar') && (document.querySelector('.sidebar').style.display = 'none');
+            document.querySelector('.main-wrapper') && (document.querySelector('.main-wrapper').style.display = 'none');
+
+            // Validate token
+            const storedToken = localStorage.getItem(`bp_token_${orderId}`);
+            if (!storedToken || storedToken !== token) {
+                view.innerHTML = renderPublicError();
+                return;
+            }
+
+            // Load order (only from the device where data lives)
+            const allOrders = JSON.parse(localStorage.getItem('bp_orders')) || [];
+            const order = allOrders.find(o => o.id === orderId);
+            if (!order) {
+                view.innerHTML = renderPublicError();
+                return;
+            }
+
+            view.innerHTML = renderPublicInvoice(order);
+        }
+
+        function renderPublicError() {
+            return `
+                <div class="pub-error-card">
+                    <div style="font-size: 48px; margin-bottom: 16px;">🔒</div>
+                    <h2>Invoice Not Found</h2>
+                    <p>This link may be invalid, expired, or the invoice data is not available on this device. Please contact BookPrint Pro for assistance.</p>
+                </div>
+            `;
+        }
+
+        function renderPublicInvoice(o) {
+            const balance = o.totalSell - o.amtPaid;
+            const today = new Date().toISOString().split('T')[0];
+            const isOverdue = o.dueDate && o.dueDate < today && balance > 0.01;
+            const isPaid = balance <= 0.01;
+            const isPartial = !isPaid && o.amtPaid > 0;
+            const isUnpaid = !isPaid && !isPartial;
+
+            const statusClass = isPaid ? 'paid' : (isPartial ? 'partial' : 'unpaid');
+            const statusIcon = isPaid ? '✅' : (isPartial ? '⏳' : '❌');
+            const statusLabel = isPaid ? 'Payment Complete' : (isPartial ? 'Partially Paid' : 'Payment Due');
+
+            const balanceClass = isPaid ? 'paid-amount' : (isPartial ? 'partial-amount' : 'unpaid-amount');
+            const bannerClass = isPaid ? 'paid-banner' : (isPartial ? 'partial-banner' : 'unpaid-banner');
+            const labelClass = isPaid ? 'paid-text' : (isPartial ? 'partial-text' : 'unpaid-text');
+
+            const invoiceNum = `INV-${o.id.toString().slice(-8).toUpperCase()}`;
+            const orderDate = new Date(o.date).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' });
+            const dueDateFmt = o.dueDate
+                ? new Date(o.dueDate).toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })
+                : 'Upon Receipt';
+
+            const overdueHTML = isOverdue ? `
+                <div class="pub-overdue-alert">
+                    <span style="font-size: 20px;">⚠️</span>
+                    <div>
+                        <strong>Payment Overdue</strong><br>
+                        This invoice was due on ${dueDateFmt}. Please clear this balance immediately.
                     </div>
                 </div>
+            ` : '';
 
-                <div style="display: grid; gap: 16px;">
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                        <span style="color: var(--text-muted);">Customer</span>
-                        <span style="font-weight: 600;">${data.customer}</span>
+            const successHTML = isPaid ? `
+                <div class="pub-success-banner">
+                    <div style="font-size: 40px; margin-bottom: 8px;">✅</div>
+                    <h3>Your payment is complete. Thank you!</h3>
+                    <p>We appreciate your prompt payment. Your order with BookPrint Pro is fully settled.</p>
+                </div>
+            ` : '';
+
+            return `
+                <div class="pub-card">
+                    <div class="pub-header">
+                        <div class="pub-logo">B</div>
+                        <div class="pub-business-name">BookPrint Pro Services</div>
+                        <div class="pub-invoice-num">INVOICE #${invoiceNum}</div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                        <span style="color: var(--text-muted);">Project</span>
-                        <span style="font-weight: 600;">${data.title}</span>
+
+                    <div class="pub-body">
+
+                        <!-- STATUS BANNER -->
+                        <div class="pub-status-banner ${bannerClass}">
+                            <div class="pub-status-icon">${statusIcon}</div>
+                            <div class="pub-status-label ${labelClass}">${statusLabel}</div>
+                            <div class="pub-balance-amount ${balanceClass}">${formatCurrency(balance > 0 ? balance : 0)}</div>
+                            <div class="pub-balance-note">${isPaid ? 'No outstanding balance' : 'Balance remaining'}</div>
+                        </div>
+
+                        ${overdueHTML}
+
+                        <!-- BOOK DETAILS -->
+                        <div class="pub-section-title" style="margin-top: 24px;">Book Details</div>
+                        <div style="margin-bottom: 24px;">
+                            <div class="pub-detail-row">
+                                <span class="pub-detail-label">Book Title</span>
+                                <span class="pub-detail-value">${o.title}</span>
+                            </div>
+                            <div class="pub-detail-row">
+                                <span class="pub-detail-label">Customer</span>
+                                <span class="pub-detail-value">${o.customer}</span>
+                            </div>
+                            <div class="pub-detail-row">
+                                <span class="pub-detail-label">Number of Pages</span>
+                                <span class="pub-detail-value">${o.pages} pages</span>
+                            </div>
+                            <div class="pub-detail-row">
+                                <span class="pub-detail-label">Quantity</span>
+                                <span class="pub-detail-value">${o.qty} cop${o.qty === 1 ? 'y' : 'ies'}</span>
+                            </div>
+                            <div class="pub-detail-row">
+                                <span class="pub-detail-label">Price per Copy</span>
+                                <span class="pub-detail-value">${formatCurrency(o.sellPrice)}</span>
+                            </div>
+                            <div class="pub-detail-row">
+                                <span class="pub-detail-label">Order Date</span>
+                                <span class="pub-detail-value">${orderDate}</span>
+                            </div>
+                            <div class="pub-detail-row">
+                                <span class="pub-detail-label" style="color:${isOverdue ? '#DC2626' : 'inherit'}">Due Date</span>
+                                <span class="pub-detail-value" style="color:${isOverdue ? '#DC2626' : 'inherit'}; font-weight: ${isOverdue ? '700' : '600'}">
+                                    ${dueDateFmt}${isOverdue ? ' ⚠️' : ''}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- PAYMENT BREAKDOWN -->
+                        <div class="pub-section-title">Payment Breakdown</div>
+                        <div class="pub-breakdown-box">
+                            <div class="pub-breakdown-row">
+                                <span style="color: #64748B;">Total Amount</span>
+                                <span style="font-weight: 600;">${formatCurrency(o.totalSell)}</span>
+                            </div>
+                            <div class="pub-breakdown-row paid-row">
+                                <span>Amount Paid</span>
+                                <span style="font-weight: 600;">− ${formatCurrency(o.amtPaid)}</span>
+                            </div>
+                            <div class="pub-breakdown-row total-row ${isPaid ? 'paid-row' : 'balance-row'}">
+                                <span>${isPaid ? 'Paid in Full' : 'Balance Due'}</span>
+                                <span>${formatCurrency(balance > 0 ? balance : 0)}</span>
+                            </div>
+                        </div>
+
+                        ${successHTML}
                     </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                        <span style="color: var(--text-muted);">Total Bill</span>
-                        <span style="font-weight: 600;">${formatCurrency(data.totalSell)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                        <span style="color: var(--text-muted);">Total Paid</span>
-                        <span style="font-weight: 600; color: var(--success);">${formatCurrency(data.amtPaid)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border);">
-                        <span style="color: var(--text-muted);">Due Date</span>
-                        <span style="font-weight: 600; color: var(--danger);">${data.dueDate || 'Upon Receipt'}</span>
+
+                    <div class="pub-footer">
+                        <p>
+                            <strong>BookPrint Pro Services</strong><br>
+                            For payment queries, contact us at <strong>contact@bookprintpro.com</strong>
+                        </p>
                     </div>
                 </div>
             `;
         }
+
+        // =============================================
+        // ADMIN CORE LOGIC
+        // =============================================
 
         function saveToLocal() {
             localStorage.setItem('bp_orders', JSON.stringify(orders));
@@ -552,22 +800,18 @@
             const qty = parseFloat(document.getElementById('qty').value) || 0;
             const costPage = parseFloat(document.getElementById('costPage').value) || 0;
             const sellPrice = parseFloat(document.getElementById('sellPrice').value) || 0;
-
             const totalCost = pages * costPage * qty;
             const totalSell = sellPrice * qty;
             const profit = totalSell - totalCost;
-
             document.getElementById('pre-cost').innerText = formatCurrency(totalCost);
             document.getElementById('pre-sell').innerText = formatCurrency(totalSell);
             document.getElementById('pre-profit').innerText = formatCurrency(profit);
-            
             return { totalCost, totalSell, profit };
         }
 
         function handleSaveOrder(e) {
             e.preventDefault();
             const calc = calculatePreview();
-            
             const newOrder = {
                 id: currentEditId || Date.now(),
                 customer: document.getElementById('custName').value,
@@ -585,14 +829,12 @@
                 totalSell: calc.totalSell,
                 profit: calc.profit
             };
-
-            if(currentEditId) {
+            if (currentEditId) {
                 const idx = orders.findIndex(o => o.id === currentEditId);
                 orders[idx] = newOrder;
             } else {
                 orders.push(newOrder);
             }
-
             saveToLocal();
             renderAll();
             closeModal('order-modal');
@@ -600,16 +842,15 @@
             currentEditId = null;
         }
 
-        // Rendering Engine
+        function formatCurrency(v) {
+            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(v);
+        }
+
         function renderAll() {
             renderDashboard();
             renderOrdersTable(orders);
             renderDebtors();
             renderInvoices();
-        }
-
-        function formatCurrency(v) {
-            return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }).format(v);
         }
 
         function renderDashboard() {
@@ -618,8 +859,7 @@
             const profit = revenue - costs;
             const debt = orders.reduce((s, o) => s + (o.totalSell - o.amtPaid), 0);
 
-            const grid = document.getElementById('stats-grid');
-            grid.innerHTML = `
+            document.getElementById('stats-grid').innerHTML = `
                 <div class="stat-card">
                     <div class="stat-label">Total Revenue</div>
                     <div class="stat-value">${formatCurrency(revenue)}</div>
@@ -642,17 +882,14 @@
                 </div>
             `;
 
-            // Simple Chart
-            const maxVal = Math.max(revenue, costs, profit) || 1;
+            const maxVal = Math.max(revenue, costs, profit, 1);
             const h = 200;
-            const chart = document.getElementById('chart-area');
-            chart.innerHTML = `
+            document.getElementById('chart-area').innerHTML = `
                 <div style="background: var(--primary); width: 60px; height: ${(revenue/maxVal)*h}px; border-radius: 8px 8px 0 0;" title="Revenue"></div>
                 <div style="background: var(--text-muted); width: 60px; height: ${(costs/maxVal)*h}px; border-radius: 8px 8px 0 0;" title="Cost"></div>
                 <div style="background: var(--accent); width: 60px; height: ${(profit/maxVal)*h}px; border-radius: 8px 8px 0 0;" title="Profit"></div>
             `;
 
-            // Reports updates
             document.getElementById('rep-annual-rev').innerText = formatCurrency(revenue);
             document.getElementById('rep-avg-order').innerText = formatCurrency(revenue / (orders.length || 1));
             document.getElementById('rep-collection').innerText = Math.round(((revenue - debt) / (revenue || 1)) * 100) + '%';
@@ -660,6 +897,10 @@
 
         function renderOrdersTable(data) {
             const tbody = document.getElementById('orders-body');
+            if (!data.length) {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 48px; color: var(--text-muted);">No orders yet. Click "New Print Order" to get started.</td></tr>`;
+                return;
+            }
             tbody.innerHTML = data.map(o => {
                 const balance = o.totalSell - o.amtPaid;
                 const status = balance <= 0 ? 'paid' : (o.amtPaid > 0 ? 'partial' : 'unpaid');
@@ -670,17 +911,15 @@
                             <div style="font-size: 11px; color: var(--text-muted);">ID: ${o.id.toString().slice(-6)}</div>
                         </td>
                         <td>${o.title}</td>
-                        <td>${new Date(o.date).toLocaleDateString()}</td>
+                        <td>${new Date(o.date + 'T00:00:00').toLocaleDateString('en-IN')}</td>
                         <td>${o.qty} copies</td>
                         <td style="color: var(--success); font-weight: 600;">${formatCurrency(o.profit)}</td>
-                        <td>
-                            <span class="status-badge status-${status}">${status.toUpperCase()}</span>
-                        </td>
+                        <td><span class="status-badge status-${status}">${status.toUpperCase()}</span></td>
                         <td>
                             <div style="display: flex; gap: 8px;">
-                                <button class="btn-icon" onclick="editOrder(${o.id})">✎</button>
-                                <button class="btn-icon" onclick="openInvoice(${o.id})">📄</button>
-                                <button class="btn-icon" style="color:var(--danger)" onclick="deleteOrder(${o.id})">✕</button>
+                                <button class="btn-icon" onclick="editOrder(${o.id})" title="Edit">✎</button>
+                                <button class="btn-icon" onclick="openInvoice(${o.id})" title="Invoice">📄</button>
+                                <button class="btn-icon" style="color:var(--danger)" onclick="deleteOrder(${o.id})" title="Delete">✕</button>
                             </div>
                         </td>
                     </tr>
@@ -694,29 +933,33 @@
             const preview = document.getElementById('debtor-preview-list');
             const today = new Date().toISOString().split('T')[0];
 
-            tbody.innerHTML = debtors.map(o => {
-                const isOverdue = o.dueDate && o.dueDate < today;
-                return `
-                    <tr class="${isOverdue ? 'overdue-row' : ''}">
-                        <td>
-                            <div style="font-weight: 600;">${o.customer}</div>
-                            ${isOverdue ? '<span style="font-size: 10px; color: var(--danger); font-weight: 800;">● OVERDUE</span>' : ''}
-                        </td>
-                        <td>${formatCurrency(o.totalSell)}</td>
-                        <td>${formatCurrency(o.amtPaid)}</td>
-                        <td style="color: var(--danger); font-weight: 700;">${formatCurrency(o.totalSell - o.amtPaid)}</td>
-                        <td style="color: ${isOverdue ? 'var(--danger)' : 'inherit'}; font-weight: ${isOverdue ? '700' : 'normal'}">
-                            ${o.dueDate || 'N/A'}
-                        </td>
-                        <td>
-                            <div style="display: flex; gap: 8px;">
-                                <button class="btn btn-outline" style="padding: 4px 12px; font-size: 11px;" onclick="markAsPaid(${o.id})">Quick Pay</button>
-                                <button class="btn-icon" onclick="copyShareLink(${o.id})" title="Copy Share Link">🔗</button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
+            if (!debtors.length) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 48px; color: var(--text-muted);">🎉 No active debtors! All balances cleared.</td></tr>`;
+            } else {
+                tbody.innerHTML = debtors.map(o => {
+                    const isOverdue = o.dueDate && o.dueDate < today;
+                    return `
+                        <tr>
+                            <td>
+                                <div style="font-weight: 600;">${o.customer}</div>
+                                ${isOverdue ? '<span style="font-size: 10px; color: var(--danger); font-weight: 800;">● OVERDUE</span>' : ''}
+                            </td>
+                            <td>${formatCurrency(o.totalSell)}</td>
+                            <td>${formatCurrency(o.amtPaid)}</td>
+                            <td style="color: var(--danger); font-weight: 700;">${formatCurrency(o.totalSell - o.amtPaid)}</td>
+                            <td style="color: ${isOverdue ? 'var(--danger)' : 'inherit'}; font-weight: ${isOverdue ? '700' : 'normal'}">
+                                ${o.dueDate || 'N/A'}
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 8px; align-items: center;">
+                                    <button class="btn btn-outline" style="padding: 4px 12px; font-size: 11px;" onclick="markAsPaid(${o.id})">Quick Pay</button>
+                                    <button class="btn-copy-link" onclick="copyShareLink(${o.id})" data-copy-id="${o.id}" title="Copy shareable payment link">🔗 Copy Link</button>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
 
             preview.innerHTML = debtors.slice(0, 4).map(o => `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--border);">
@@ -732,32 +975,40 @@
         function renderInvoices() {
             const creditSales = orders.filter(o => o.method === 'credit');
             const grid = document.getElementById('invoices-grid');
+            if (!creditSales.length) {
+                grid.innerHTML = '<p style="color: var(--text-muted);">No credit sales recorded yet.</p>';
+                return;
+            }
             grid.innerHTML = creditSales.map(o => {
                 const bal = o.totalSell - o.amtPaid;
+                const isPaid = bal <= 0.01;
                 return `
-                    <div class="stat-card" style="border-left: 4px solid ${bal > 0 ? 'var(--warning)' : 'var(--success)'}">
-                        <div style="display: flex; justify-content: space-between;">
-                            <span style="font-size: 12px; color: var(--text-muted);">#INV-${o.id.toString().slice(-5)}</span>
-                            <span style="font-size: 12px; color: ${bal > 0 ? 'var(--warning)' : 'var(--success)'}; font-weight: 700;">${bal > 0 ? 'PENDING' : 'SETTLED'}</span>
+                    <div class="stat-card" style="border-left: 4px solid ${isPaid ? 'var(--success)' : 'var(--warning)'}">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <span style="font-size: 12px; color: var(--text-muted);">#INV-${o.id.toString().slice(-5).toUpperCase()}</span>
+                            <span class="status-badge status-${isPaid ? 'paid' : (o.amtPaid > 0 ? 'partial' : 'unpaid')}">${isPaid ? 'SETTLED' : (o.amtPaid > 0 ? 'PARTIAL' : 'PENDING')}</span>
                         </div>
-                        <h4 style="margin: 12px 0;">${o.customer}</h4>
-                        <div style="font-size: 14px; margin-bottom: 16px;">${o.title}</div>
+                        <h4 style="margin-bottom: 4px;">${o.customer}</h4>
+                        <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">${o.title}</div>
                         <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                             <div>
                                 <div style="font-size: 11px; color: var(--text-muted);">Balance</div>
-                                <div style="font-size: 18px; font-weight: 700;">${formatCurrency(bal)}</div>
+                                <div style="font-size: 18px; font-weight: 700; color: ${isPaid ? 'var(--success)' : 'var(--danger)'}">${formatCurrency(bal > 0 ? bal : 0)}</div>
                             </div>
-                             <div style="display: flex; gap: 8px;">
-                                <button class="btn-icon" onclick="openInvoice(${o.id})">View Invoice</button>
-                                <button class="btn-icon" onclick="copyShareLink(${o.id})" title="Copy Share Link">🔗</button>
-                             </div>
+                            <div style="display: flex; gap: 8px; flex-direction: column; align-items: flex-end;">
+                                <button class="btn-icon" onclick="openInvoice(${o.id})" style="font-size: 12px; padding: 6px 10px;">📄 View Admin Invoice</button>
+                                <button class="btn-copy-link" onclick="copyShareLink(${o.id})" data-copy-id="${o.id}">🔗 Copy Link</button>
+                            </div>
                         </div>
                     </div>
                 `;
-            }).join('') || '<p class="full">No credit sales recorded yet.</p>';
+            }).join('');
         }
 
-        // Actions
+        // =============================================
+        // ADMIN ACTIONS
+        // =============================================
+
         function openOrderModal() {
             currentEditId = null;
             document.getElementById('modal-title').innerText = 'New Print Order';
@@ -786,14 +1037,14 @@
             document.getElementById('amtPaid').value = o.amtPaid;
             document.getElementById('payMethod').value = o.method;
             document.getElementById('notes').value = o.notes;
-            
             document.getElementById('order-modal').style.display = 'flex';
             calculatePreview();
         }
 
         function deleteOrder(id) {
-            if(confirm('Are you sure you want to delete this order?')) {
+            if (confirm('Are you sure you want to delete this order?')) {
                 orders = orders.filter(o => o.id !== id);
+                localStorage.removeItem(`bp_token_${id}`);
                 saveToLocal();
                 renderAll();
             }
@@ -801,9 +1052,9 @@
 
         function markAsPaid(id) {
             const o = orders.find(x => x.id === id);
-            const amt = prompt(`Enter payment amount for ${o.customer} (Balance: ${formatCurrency(o.totalSell - o.amtPaid)}):`, o.totalSell - o.amtPaid);
-            if(amt !== null) {
-                o.amtPaid += parseFloat(amt);
+            const amt = prompt(`Enter payment amount for ${o.customer} (Balance: ${formatCurrency(o.totalSell - o.amtPaid)}):`, (o.totalSell - o.amtPaid).toFixed(2));
+            if (amt !== null && !isNaN(parseFloat(amt))) {
+                o.amtPaid = Math.min(o.amtPaid + parseFloat(amt), o.totalSell);
                 saveToLocal();
                 renderAll();
             }
@@ -813,32 +1064,29 @@
             const o = orders.find(x => x.id === id);
             const modal = document.getElementById('invoice-modal');
             const printArea = document.getElementById('invoice-print-area');
-            
             printArea.innerHTML = `
                 <div class="invoice-paper" id="invoice-print-view">
                     <div class="invoice-header">
                         <div>
                             <h1 style="font-size: 28px; color: var(--primary); font-weight: 800;">INVOICE</h1>
-                            <p style="color: #666; font-size: 14px;">#INV-${o.id.toString().slice(-8)}</p>
+                            <p style="color: #666; font-size: 14px;">#INV-${o.id.toString().slice(-8).toUpperCase()}</p>
                         </div>
                         <div style="text-align: right;">
                             <h4 style="font-size: 18px; font-weight: 700;">BookPrint Pro Services</h4>
-                            <p style="font-size: 12px; color: #666;">123 Print Street, Creative Hub<br>New York, NY 10001<br>contact@bookprintpro.com</p>
+                            <p style="font-size: 12px; color: #666;">contact@bookprintpro.com</p>
                         </div>
                     </div>
-
                     <div class="invoice-meta">
                         <div>
                             <p style="text-transform: uppercase; font-size: 12px; color: #999; font-weight: 700; margin-bottom: 5px;">Bill To:</p>
                             <h4 style="font-size: 18px; font-weight: 700;">${o.customer}</h4>
-                            <p style="font-size: 13px; color: #666;">Date: ${new Date(o.date).toLocaleDateString()}<br>Due Date: ${o.dueDate || 'Upon Receipt'}</p>
+                            <p style="font-size: 13px; color: #666;">Date: ${new Date(o.date + 'T00:00:00').toLocaleDateString('en-IN')}<br>Due: ${o.dueDate || 'Upon Receipt'}</p>
                         </div>
                         <div style="text-align: right;">
                             <p style="text-transform: uppercase; font-size: 12px; color: #999; font-weight: 700; margin-bottom: 5px;">Project:</p>
                             <h4 style="font-size: 16px; font-weight: 600;">${o.title}</h4>
                         </div>
                     </div>
-
                     <table class="invoice-table">
                         <thead>
                             <tr>
@@ -859,46 +1107,33 @@
                             </tr>
                         </tbody>
                     </table>
-
                     <div class="invoice-totals">
-                        <div class="invoice-total-row">
-                            <span>Subtotal</span>
-                            <span>${formatCurrency(o.totalSell)}</span>
-                        </div>
-                        <div class="invoice-total-row">
-                            <span>Paid to Date</span>
-                            <span style="color: var(--success)">-${formatCurrency(o.amtPaid)}</span>
-                        </div>
-                        <div class="invoice-total-row grand">
-                            <span>Balance Due</span>
-                            <span>${formatCurrency(o.totalSell - o.amtPaid)}</span>
-                        </div>
+                        <div class="invoice-total-row"><span>Subtotal</span><span>${formatCurrency(o.totalSell)}</span></div>
+                        <div class="invoice-total-row"><span>Paid to Date</span><span style="color: var(--success)">−${formatCurrency(o.amtPaid)}</span></div>
+                        <div class="invoice-total-row grand"><span>Balance Due</span><span>${formatCurrency(o.totalSell - o.amtPaid)}</span></div>
                     </div>
-
-                    <div style="margin-top: 100px; border-top: 1px solid #EEE; padding-top: 20px;">
-                        <h5 style="margin-bottom: 10px; font-weight: 700;">Payment Instructions:</h5>
-                        <p style="font-size: 13px; color: #666;">Please include Invoice #INV-${o.id.toString().slice(-8)} in your bank transfer. Payments due within 14 days of order completion. Thank you for your business!</p>
+                    <div style="margin-top: 60px; border-top: 1px solid #EEE; padding-top: 20px;">
+                        <h5 style="margin-bottom: 8px; font-weight: 700;">Payment Instructions:</h5>
+                        <p style="font-size: 13px; color: #666;">Please reference Invoice #INV-${o.id.toString().slice(-8).toUpperCase()} with your payment. Thank you for your business!</p>
                     </div>
                 </div>
             `;
             modal.style.display = 'flex';
         }
 
-        // Utilities
         function showSection(id, event) {
-            if(event) event.preventDefault();
+            if (event) event.preventDefault();
             document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.getElementById('current-section-name').innerText = id.charAt(0).toUpperCase() + id.slice(1);
-            
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
             const link = document.querySelector(`[onclick*="'${id}'"]`);
-            if(link) link.classList.add('active');
+            if (link) link.classList.add('active');
         }
 
         function globalSearch(query) {
-            const filtered = orders.filter(o => 
-                o.customer.toLowerCase().includes(query.toLowerCase()) || 
+            const filtered = orders.filter(o =>
+                o.customer.toLowerCase().includes(query.toLowerCase()) ||
                 o.title.toLowerCase().includes(query.toLowerCase()) ||
                 o.id.toString().includes(query)
             );
@@ -908,50 +1143,38 @@
         function applyFilters() {
             const status = document.getElementById('filter-status').value;
             const date = document.getElementById('filter-date').value;
-            
             let filtered = orders;
-            if(status !== 'all') {
+            if (status !== 'all') {
                 filtered = filtered.filter(o => {
                     const bal = o.totalSell - o.amtPaid;
-                    if(status === 'paid') return bal <= 0;
-                    if(status === 'unpaid') return o.amtPaid === 0;
-                    if(status === 'partial') return o.amtPaid > 0 && bal > 0;
+                    if (status === 'paid') return bal <= 0;
+                    if (status === 'unpaid') return o.amtPaid === 0;
+                    if (status === 'partial') return o.amtPaid > 0 && bal > 0;
                 });
             }
-            if(date) {
-                filtered = filtered.filter(o => o.date === date);
-            }
+            if (date) filtered = filtered.filter(o => o.date === date);
             renderOrdersTable(filtered);
         }
 
         function exportToCSV() {
-            if(orders.length === 0) return alert('No data to export.');
-            
-            const headers = ['Order ID', 'Customer', 'Book Title', 'Pages', 'Qty', 'Unit Cost', 'Unit Sell', 'Total Cost', 'Total Sell', 'Profit', 'Amt Paid', 'Date', 'Method'];
-            const rows = orders.map(o => [
-                o.id, o.customer, o.title, o.pages, o.qty, o.costPage, o.sellPrice, o.totalCost, o.totalSell, o.profit, o.amtPaid, o.date, o.method
-            ]);
-            
-            let csvContent = "data:text/csv;charset=utf-8," 
-                + headers.join(",") + "\n"
-                + rows.map(e => e.join(",")).join("\n");
-                
-            const encodedUri = encodeURI(csvContent);
+            if (!orders.length) return alert('No data to export.');
+            const headers = ['Order ID','Customer','Book Title','Pages','Qty','Unit Cost','Unit Sell','Total Cost','Total Sell','Profit','Amt Paid','Date','Method'];
+            const rows = orders.map(o => [o.id,o.customer,o.title,o.pages,o.qty,o.costPage,o.sellPrice,o.totalCost,o.totalSell,o.profit,o.amtPaid,o.date,o.method]);
+            const csvContent = "data:text/csv;charset=utf-8," + headers.join(",") + "\n" + rows.map(e => e.join(",")).join("\n");
             const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
+            link.setAttribute("href", encodeURI(csvContent));
             link.setAttribute("download", `PrintPro_Export_${new Date().toISOString().split('T')[0]}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
         }
+
         function downloadInvoicePDF() {
             const element = document.getElementById('invoice-print-area');
             const btn = document.getElementById('pdf-download-btn');
-            const originalText = btn.innerText;
-            
+            const orig = btn.innerText;
             btn.innerText = 'Generating...';
             btn.disabled = true;
-
             const opt = {
                 margin: 0.5,
                 filename: `Invoice_${Date.now()}.pdf`,
@@ -959,45 +1182,18 @@
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
             };
-
-            html2pdf().set(opt).from(element).save().then(() => {
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }).catch(err => {
-                console.error('PDF Generation Error:', err);
-                alert('Failed to generate PDF. Please try again.');
-                btn.innerText = originalText;
-                btn.disabled = false;
-            });
+            html2pdf().set(opt).from(element).save()
+                .then(() => { btn.innerText = orig; btn.disabled = false; })
+                .catch(err => { alert('Failed to generate PDF.'); btn.innerText = orig; btn.disabled = false; });
         }
 
         function clearAllData() {
-            if (confirm('CAUTION: Are you sure you want to delete ALL business data? This will wipe your entire history and cannot be undone.')) {
-                if (confirm('One last check: Delete everything?')) {
+            if (confirm('CAUTION: This will wipe ALL business data and cannot be undone.')) {
+                if (confirm('Last check — delete everything?')) {
                     localStorage.clear();
                     location.reload();
                 }
             }
-        }
-
-        function copyShareLink(id) {
-            const o = orders.find(x => x.id === id);
-            const data = btoa(JSON.stringify({
-                customer: o.customer,
-                title: o.title,
-                totalSell: o.totalSell,
-                amtPaid: o.amtPaid,
-                dueDate: o.dueDate
-            }));
-            
-            const link = `${window.location.origin}${window.location.pathname}?view=status&d=${data}`;
-            
-            navigator.clipboard.writeText(link).then(() => {
-                alert('Shareable link copied to clipboard! You can now send this to your customer.');
-            }).catch(err => {
-                console.error('Failed to copy link:', err);
-                prompt('Copy this link manually:', link);
-            });
         }
     </script>
 </body>
