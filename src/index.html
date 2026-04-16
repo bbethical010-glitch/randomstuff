@@ -50,7 +50,17 @@
         .nav-link.active svg { stroke: var(--primary); }
         .sidebar-footer { padding: 32px; border-top: 1px solid rgba(255,255,255,0.05); }
 
+        /* --- Cloud Sync Section styles --- */
+        .sync-card { background: white; border-radius: 20px; padding: 40px; border: 1.5px dashed var(--border); text-align: center; max-width: 600px; margin: 0 auto; }
+        .sync-icon { width: 80px; height: 80px; background: var(--accent-glow); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; color: var(--accent); }
+        .sync-icon svg { width: 40px; height: 40px; }
+        .sync-step { display: flex; align-items: center; gap: 16px; text-align: left; background: #F8FAFC; padding: 20px; border-radius: 12px; margin-bottom: 12px; border: 1px solid var(--border); }
+        .step-num { width: 32px; height: 32px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .step-txt { font-size: 14px; color: var(--text-dark); line-height: 1.5; }
+        .step-txt strong { color: var(--accent-hover); }
+
         /* --- Main Content --- */
+
         .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         header { height: 80px; background: #FFFFFF; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; flex-shrink: 0; }
         .breadcrumb { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 14px; }
@@ -180,6 +190,13 @@
                     <span>Reports</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" onclick="showSection('cloud-sync', event)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19V5a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2z"/><path d="M7 19v-5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v5"/><path d="M9 3v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V3"/></svg>
+                    <span>Cloud Sync</span>
+                </a>
+            </li>
+
         </ul>
         <div class="sidebar-footer">
             <button class="btn btn-primary" style="width: 100%;" onclick="openOrderModal()">
@@ -273,8 +290,81 @@
                 </div>
             </section>
 
+            <!-- Cloud Sync -->
+            <section id="cloud-sync" class="page-section">
+                <div class="sync-card">
+                    <div class="sync-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A6 6 0 1 1 15.89 21.21L12 17.32l-3.89 3.89a6 6 0 1 1-5.32-5.32L6.68 12 2.79 8.11a6 6 0 1 1 5.32-5.32L12 6.68l3.89-3.89a6 6 0 1 1 5.32 5.32L17.32 12l3.89 3.89z"/></svg>
+                    </div>
+                    <h2 style="font-size: 26px; font-weight: 800; margin-bottom: 8px;">Live Dashboard Sync</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 28px; font-size: 15px;">Connect to JSONBin.io (free) for instant, one-click live updates — no manual GitHub pushes needed.</p>
+
+                    <!-- JSONBin Config -->
+                    <div style="background: #F8FAFC; border-radius: 16px; padding: 24px; margin-bottom: 24px; border: 1px solid var(--border); text-align: left;">
+                        <div style="font-size: 13px; font-weight: 700; color: var(--text-dark); margin-bottom: 16px; display:flex; align-items:center; gap:8px;">
+                            🔗 Step 1 — Connect your JSONBin.io account
+                        </div>
+                        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6;">
+                            Go to <a href="https://jsonbin.io" target="_blank" style="color:var(--accent); font-weight:600;">jsonbin.io</a>, create a free account, then create a new Bin. Paste your API Key and Bin ID below.
+                        </p>
+                        <div style="display: grid; gap: 12px;">
+                            <div>
+                                <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); display:block; margin-bottom:4px;">JSONBin API Key (X-Master-Key)</label>
+                                <input id="jb-api-key" type="password" placeholder="$2b$10$..." style="width:100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); font-size: 13px; outline: none; font-family: monospace;" oninput="saveJBConfig()">
+                            </div>
+                            <div>
+                                <label style="font-size: 12px; font-weight: 600; color: var(--text-muted); display:block; margin-bottom:4px;">Bin ID</label>
+                                <input id="jb-bin-id" type="text" placeholder="67f..." style="width:100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); font-size: 13px; outline: none; font-family: monospace;" oninput="saveJBConfig()">
+                            </div>
+                        </div>
+                        <div id="jb-status" style="margin-top: 12px; font-size: 12px; display:none;"></div>
+                    </div>
+
+                    <!-- Step 2: Activate for ALL existing links -->
+                    <div style="background: #FFF7ED; border-radius: 16px; padding: 24px; margin-bottom: 24px; border: 1px solid #FED7AA; text-align: left;">
+                        <div style="font-size: 13px; font-weight: 700; color: #92400E; margin-bottom: 8px; display:flex; align-items:center; gap:8px;">
+                            🔑 Step 2 — Activate Live Sync for ALL existing links (Do once!)
+                        </div>
+                        <p style="font-size: 12px; color: #92400E; margin-bottom: 12px; line-height: 1.6;">
+                            Old links you shared don't have the Bin ID in them. Fix this by editing <strong>one line</strong> in <code>debtor.html</code> on GitHub Pages:
+                        </p>
+                        <div style="background: #1E293B; border-radius: 10px; padding: 16px; font-family: monospace; font-size: 12px; color: #94A3B8; margin-bottom: 12px; position:relative; overflow-x:auto;">
+                            <span style="color:#64748B;">// Find this line in debtor.html and replace it:</span><br>
+                            const DEFAULT_BIN_ID = '<span id="snippet-bin-placeholder" style="color:#FCD34D;">your-bin-id-here</span>';<br>
+                        </div>
+                        <button onclick="copyDebtorSnippet(this)" style="padding:7px 16px; border-radius:8px; border:1px solid #FED7AA; background:#FEF3C7; color:#92400E; font-weight:700; font-size:12px; cursor:pointer;">
+                            📋 Copy Line
+                        </button>
+                        <p style="font-size: 11px; color: #B45309; margin-top: 10px; margin-bottom:0; line-height:1.6;">
+                            After editing, commit &amp; push <code>debtor.html</code> to GitHub. Every link — old or new — will now be live forever.
+                        </p>
+                    </div>
+
+                    <div style="background: var(--accent-glow); padding: 16px 20px; border-radius: 12px; margin-bottom: 24px; border: 1px solid var(--accent); text-align: left;">
+                        <div style="display:flex; gap:10px; align-items:flex-start;">
+                            <span style="font-size:18px;">⚡</span>
+                            <p style="font-size: 13px; color: var(--primary); line-height: 1.6; margin:0;">
+                                <strong>How it works:</strong> Click "Sync Now" after any payment change. Your debtors' dashboards update <strong>instantly</strong> — no new link needed.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:12px;">
+                        <button class="btn btn-primary" onclick="exportLiveData()" style="flex:1; justify-content: center; padding: 14px;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                            Sync Now (Instant Live Update)
+                        </button>
+                        <button class="btn btn-outline" onclick="exportLiveData(true)" style="padding: 14px 20px;" title="Download JSON file instead">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+
             <!-- Debtors -->
             <section id="debtors" class="page-section">
+
                 <div class="stat-card" style="border-left: 5px solid var(--danger); margin-bottom: 24px;">
                     <h3 style="color: var(--danger); margin-bottom: 6px;">Active Debtors</h3>
                     <p style="color: var(--text-muted); font-size: 14px;">Each customer gets one persistent dashboard link showing ALL their invoices. Click <strong>📊 Share Dashboard</strong> to copy it instantly.</p>
@@ -552,14 +642,16 @@
         // =============================================
         document.addEventListener('DOMContentLoaded', () => {
             // Check if this is a public invoice link FIRST
-            if (checkPublicLink()) return; // stop here — don't init admin app
+            if (checkPublicLink()) return;
 
             // Otherwise boot the admin app
             renderAll();
+            loadJBConfig(); // load JSONBin settings
             document.getElementById('orderDate').valueAsDate = new Date();
             document.getElementById('order-form').onsubmit = handleSaveOrder;
             document.getElementById('expense-form').onsubmit = handleSaveExpense;
         });
+
 
         // =============================================
         // CUSTOMER DASHBOARD LINK SYSTEM
@@ -585,6 +677,7 @@
             const customerOrders = orders.filter(o => o.customer === customerName);
             if (!customerOrders.length) return '';
             const token = getOrCreateCustomerToken(customerName);
+            const binId = localStorage.getItem('bp_jb_bin_id') || '';
             // Encode ONLY customer-facing data — NO costs, NO profits
             const payload = {
                 type: 'dashboard',
@@ -606,8 +699,11 @@
                 }))
             };
             const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-            return `${DEBTOR_PAGE_URL}#dashboard?data=${encoded}`;
+            // Include bin ID if JSONBin is configured for instant live sync
+            const binParam = binId ? `&bin=${binId}` : '';
+            return `${DEBTOR_PAGE_URL}?token=${token}${binParam}#dashboard?data=${encoded}`;
         }
+
 
         // Legacy single-invoice link (still works for older shares)
         function buildPublicLink(orderId) {
@@ -624,38 +720,44 @@
             return `${DEBTOR_PAGE_URL}#data=${encoded}`;
         }
 
-        function copyDashboardLink(customerName) {
+        function copyDashboardLink(btn, customerName) {
             const link = buildCustomerDashboardLink(customerName);
             if (!link) return;
-            const safeKey = customerName.replace(/\s+/g, '-');
+            
             navigator.clipboard.writeText(link).then(() => {
-                showCustomerCopyFeedback(safeKey);
+                if (btn) {
+                    const orig = btn.innerHTML;
+                    btn.innerHTML = '✅ Link & Token Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => { 
+                        btn.innerHTML = orig; 
+                        btn.classList.remove('copied'); 
+                        // Show a reminder about Sync
+                        alert(`Copied! Remember to use 'Cloud Sync' if you change ${customerName}'s payment status later, so their dashboard stays updated.`);
+                    }, 2500);
+                }
             }).catch(() => {
-                prompt('Copy this dashboard link to share with ' + customerName + ':', link);
+                prompt('Copy this dashboard link for ' + customerName + ':', link);
             });
         }
 
-        function showCustomerCopyFeedback(safeKey) {
-            document.querySelectorAll(`[data-cust-key="${safeKey}"]`).forEach(btn => {
-                const orig = btn.innerHTML;
-                btn.innerHTML = '✅ Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2500);
-            });
-        }
 
         // Legacy copy link (used from Invoices section)
-        function copyShareLink(orderId) {
-            // Now generates customer dashboard link (uses all orders for same customer)
+        function copyShareLink(btn, orderId) {
             const o = orders.find(x => x.id === orderId);
             if (!o) return;
             const link = buildCustomerDashboardLink(o.customer);
             if (!link) return;
             navigator.clipboard.writeText(link).then(() => {
-                document.querySelectorAll(`[data-copy-id="${orderId}"]`).forEach(btn => {
-                    btn.textContent = '✅ Copied!'; btn.classList.add('copied');
-                    setTimeout(() => { btn.innerHTML = '📊 Share Dashboard'; btn.classList.remove('copied'); }, 2500);
-                });
+                if (btn) {
+                    const orig = btn.innerHTML;
+                    btn.innerHTML = '✅ Copied!';
+                    btn.classList.add('copied');
+                    setTimeout(() => { 
+                        btn.innerHTML = orig; 
+                        btn.classList.remove('copied'); 
+                    }, 2500);
+                }
             }).catch(() => { prompt('Copy this link:', link); });
         }
 
@@ -1077,7 +1179,7 @@
                             <td style="color: var(--danger); font-weight: 700;">${formatCurrency(outstanding)}</td>
                             <td>
                                 <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                                    <button class="btn-copy-link" onclick="copyDashboardLink(${JSON.stringify(name)})" data-cust-key="${safeKey}" title="Copy full account dashboard link">📊 Share Dashboard</button>
+                                    <button class="btn-copy-link" onclick="copyDashboardLink(this, ${JSON.stringify(name).replace(/"/g, '&quot;')})" title="Copy full account dashboard link">📊 Share Dashboard</button>
                                 </div>
                             </td>
                         </tr>
@@ -1122,7 +1224,7 @@
                             </div>
                             <div style="display: flex; gap: 8px; flex-direction: column; align-items: flex-end;">
                                 <button class="btn-icon" onclick="openInvoice(${o.id})" style="font-size: 12px; padding: 6px 10px;">📄 View Invoice</button>
-                                <button class="btn-copy-link" onclick="copyShareLink(${o.id})" data-copy-id="${o.id}">📊 Share Dashboard</button>
+                                <button class="btn-copy-link" onclick="copyShareLink(this, ${o.id})">📊 Share Dashboard</button>
                             </div>
                         </div>
                     </div>
@@ -1280,6 +1382,104 @@
             if (date) filtered = filtered.filter(o => o.date === date);
             renderOrdersTable(filtered);
         }
+
+        function saveJBConfig() {
+            const apiKey = document.getElementById('jb-api-key')?.value || '';
+            const binId  = document.getElementById('jb-bin-id')?.value || '';
+            localStorage.setItem('bp_jb_api_key', apiKey);
+            localStorage.setItem('bp_jb_bin_id', binId);
+            
+            const placeholder = document.getElementById('snippet-bin-placeholder');
+            if (placeholder) placeholder.innerText = binId || 'your-bin-id-here';
+        }
+
+        function loadJBConfig() {
+            const apiKey = localStorage.getItem('bp_jb_api_key') || '';
+            const binId  = localStorage.getItem('bp_jb_bin_id') || '';
+            const keyEl  = document.getElementById('jb-api-key');
+            const binEl  = document.getElementById('jb-bin-id');
+            if (keyEl) keyEl.value = apiKey;
+            if (binEl) binEl.value = binId;
+
+            const placeholder = document.getElementById('snippet-bin-placeholder');
+            if (placeholder) placeholder.innerText = binId || 'your-bin-id-here';
+        }
+
+        function copyDebtorSnippet(btn) {
+            const binId = localStorage.getItem('bp_jb_bin_id') || 'your-bin-id-here';
+            const text = `const DEFAULT_BIN_ID = '${binId}';`;
+            navigator.clipboard.writeText(text).then(() => {
+                const oldText = btn.innerText;
+                btn.innerText = '✅ Copied!';
+                btn.style.background = '#BBF7D0';
+                setTimeout(() => {
+                    btn.innerText = oldText;
+                    btn.style.background = '#FEF3C7';
+                }, 2000);
+            });
+        }
+
+        async function exportLiveData(forceDownload = false) {
+            if (!orders.length) return alert('No active orders to sync.');
+
+            const customersMap = {};
+            const uniqueCustomers = [...new Set(orders.map(o => o.customer))];
+
+            uniqueCustomers.forEach(name => {
+                const token = getOrCreateCustomerToken(name);
+                const custOrders = orders.filter(o => o.customer === name);
+                customersMap[token] = {
+                    customer: name,
+                    businessName: 'BookPrint Pro Services',
+                    businessContact: 'contact@bookprintpro.com',
+                    invoices: custOrders.map(o => ({
+                        id: o.id,
+                        invoiceNum: `#INV-${o.id.toString().slice(-8).toUpperCase()}`,
+                        title: o.title, pages: o.pages, qty: o.qty,
+                        sellPrice: o.sellPrice, totalSell: o.totalSell,
+                        amtPaid: o.amtPaid, date: o.date, dueDate: o.dueDate || ''
+                    }))
+                };
+            });
+
+            const exportObj = { exportedAt: new Date().toISOString(), customers: customersMap };
+
+            const apiKey = localStorage.getItem('bp_jb_api_key') || '';
+            const binId  = localStorage.getItem('bp_jb_bin_id') || '';
+            const statusEl = document.getElementById('jb-status');
+
+            if (!forceDownload && apiKey && binId) {
+                // Push to JSONBin.io automatically
+                try {
+                    if (statusEl) { statusEl.style.display = 'block'; statusEl.innerHTML = '<span style="color:#F59E0B;">⏳ Syncing...</span>'; }
+                    const resp = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey },
+                        body: JSON.stringify(exportObj)
+                    });
+                    if (resp.ok) {
+                        if (statusEl) statusEl.innerHTML = '<span style="color:#10B981;">✅ Synced! All debtor dashboards are now live.</span>';
+                        setTimeout(() => { if (statusEl) statusEl.style.display = 'none'; }, 4000);
+                    } else {
+                        const errText = await resp.text();
+                        if (statusEl) statusEl.innerHTML = `<span style="color:#EF4444;">❌ Sync failed: ${resp.status}. Check your API Key/Bin ID.</span>`;
+                        console.error('JSONBin error', errText);
+                    }
+                } catch(e) {
+                    if (statusEl) statusEl.innerHTML = '<span style="color:#EF4444;">❌ Network error. Check your internet connection.</span>';
+                }
+                return;
+            }
+
+            // Fallback: download file
+            const encoded = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(exportObj, null, 2));
+            const link = document.createElement('a');
+            link.setAttribute('href', encoded);
+            link.setAttribute('download', 'db_export.json');
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            if (!apiKey || !binId) alert('Hint: Add your JSONBin API Key & Bin ID in the Cloud Sync section to skip this manual step next time!');
+        }
+
 
         function exportToCSV() {
             if (!orders.length && !expenses.length) return alert('No data to export.');
